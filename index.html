@@ -1,1 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Itália + Suíça + Puglia 2026 — Leonardo & Lisandra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--playfair:'Playfair Display',Georgia,serif;--lato:'Lato','Helvetica Neue',sans-serif;--mono:'JetBrains Mono','Courier New',monospace;--bg:#FAF8F5;--card:#FFFFFF;--border:#E8E4DF;--text:#333;--text2:#777;--text3:#AAA;}
+html,body{font-family:var(--lato);background:var(--bg);color:var(--text);overflow:hidden;height:100%;-webkit-font-smoothing:antialiased;font-size:17px;}
+#app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;overflow:hidden;}
 
+/* Header */
+.hdr{padding:20px 20px 16px;color:#fff;flex-shrink:0;transition:background 0.4s;}
+.hdr-sub{font-family:var(--lato);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.65;display:flex;justify-content:space-between;}
+.hdr-city{font-family:var(--playfair);font-size:34px;font-weight:600;line-height:1.15;margin-top:6px;}
+.hdr-date{font-family:var(--lato);font-size:15px;opacity:0.75;margin-top:4px;}
+.hdr-hotel{font-family:var(--lato);font-size:14px;opacity:0.55;margin-top:4px;}
+.hdr-tab-title{font-family:var(--playfair);font-size:28px;font-weight:600;margin-top:6px;}
+
+/* Day nav */
+.daynav{display:flex;align-items:center;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;padding:0 4px;}
+.daynav-btn{border:none;background:none;font-size:22px;padding:8px 6px;cursor:pointer;color:var(--text3);transition:opacity 0.2s;}
+.daynav-btn:disabled{opacity:0.15;}
+.daynav-scroll{flex:1;display:flex;gap:2px;overflow-x:auto;padding:8px 0;scrollbar-width:none;-ms-overflow-style:none;}
+.daynav-scroll::-webkit-scrollbar{display:none;}
+.daynav-item{display:flex;flex-direction:column;align-items:center;min-width:42px;cursor:pointer;}
+.daynav-region{font-family:var(--lato);font-size:8px;color:var(--text3);white-space:nowrap;margin-bottom:2px;letter-spacing:0.04em;text-transform:uppercase;height:12px;line-height:12px;}
+.daynav-dot{border:none;border-radius:8px;padding:5px 8px;font-family:var(--lato);font-size:12px;line-height:1.3;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--text3);}
+.daynav-dot.active{color:#fff;font-weight:700;}
+.daynav-dot span{display:block;font-size:9px;opacity:0.7;}
+
+/* Content */
+.content{flex:1;overflow-y:auto;padding:16px 16px 100px;-webkit-overflow-scrolling:touch;}
+
+/* Note box */
+.note{border-radius:12px;padding:13px 16px;margin-bottom:16px;font-family:var(--lato);font-size:15px;line-height:1.55;color:#555;}
+.note-v6{background:#FFF8E7;border-left:3px solid #D4A843;}
+.note-info{background:#F0F4F8;border-left:3px solid #B0BEC5;}
+.lug{border-radius:12px;padding:11px 15px;margin-bottom:14px;font-family:var(--lato);}
+.lug-manage{background:#FBEBCE;border-left:4px solid #DB9B1F;}
+.lug-transfer{background:#E6EFF5;border-left:4px solid #6B9BBF;}
+.lug-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;}
+.lug-manage .lug-hdr{color:#8A6410;}
+.lug-transfer .lug-hdr{color:#2C5570;}
+.lug-txt{font-size:13.5px;line-height:1.5;color:#555;}
+
+/* Schedule */
+.sched-label{font-family:var(--lato);font-size:13px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:10px;font-weight:700;}
+.sched-row{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #F0EDE8;}
+.sched-row:last-child{border-bottom:none;}
+.sched-time{font-family:var(--mono);font-size:13px;font-weight:500;min-width:76px;text-align:right;padding-top:1px;flex-shrink:0;}
+.sched-act{font-family:var(--lato);font-size:16px;line-height:1.55;color:var(--text);}
+
+/* Food section */
+.food-btn{font-family:var(--lato);font-size:13px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);background:none;border:none;cursor:pointer;padding:0;margin-top:22px;margin-bottom:12px;display:flex;align-items:center;gap:6px;font-weight:700;}
+.food-btn .arrow{font-size:11px;transition:transform 0.2s;display:inline-block;}
+.food-btn .arrow.open{transform:rotate(180deg);}
+.food-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.food-tag{background:var(--card);border-radius:20px;padding:7px 15px;font-family:var(--lato);font-size:14px;color:#555;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+
+/* Cash box */
+.cash-box{margin-top:16px;background:#FFF8E7;border-radius:10px;padding:11px 15px;font-family:var(--lato);font-size:14px;color:#856404;}
+
+/* Swipe hint */
+.swipe-hint{text-align:center;margin-top:24px;font-family:var(--lato);font-size:12px;color:#DDD;}
+
+/* ─── Reservas ─── */
+.urg-group{margin-bottom:20px;}
+.urg-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.urg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.urg-label{font-family:var(--lato);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+.res-card{display:flex;gap:12px;padding:13px 15px;margin-bottom:6px;border-radius:10px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+.res-card.checked{background:#F5F5F0;border-color:#DDD;opacity:0.55;}
+.res-check{width:24px;height:24px;border-radius:6px;border:2px solid #CCC;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;transition:all 0.2s;color:transparent;}
+.res-check.on{border-color:#28A745;background:#28A745;color:#fff;}
+.res-name{font-family:var(--lato);font-size:15px;font-weight:700;color:var(--text);}
+.res-card.checked .res-name{text-decoration:line-through;}
+.res-sub{font-family:var(--lato);font-size:13px;color:var(--text2);margin-top:3px;}
+.res-note{font-family:var(--lato);font-size:12px;color:var(--text3);margin-top:3px;}
+
+/* ─── Budget ─── */
+.budget-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid var(--border);}
+.budget-row{display:flex;justify-content:space-between;margin-bottom:8px;font-family:var(--lato);}
+.budget-label{font-size:14px;color:var(--text2);}
+.budget-val{font-family:var(--playfair);font-size:20px;font-weight:600;color:var(--text);}
+.budget-bar{background:#F0EDE8;border-radius:6px;height:8px;overflow:hidden;margin-bottom:8px;}
+.budget-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#28A745,#28A74580);transition:width 0.3s;}
+.budget-meta{display:flex;justify-content:space-between;font-family:var(--lato);font-size:12px;color:var(--text3);}
+.budget-daily{margin-top:10px;font-family:var(--lato);font-size:13px;color:var(--text2);text-align:center;}
+.bi{display:flex;align-items:center;gap:12px;padding:13px 15px;margin-bottom:4px;background:var(--card);border-radius:10px;border:1px solid #F0EDE8;}
+.bi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.bi-cat{flex:1;font-family:var(--lato);font-size:15px;color:var(--text);}
+.bi-val{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text);}
+.budget-legend{display:flex;gap:12px;margin-top:16px;justify-content:center;flex-wrap:wrap;}
+.budget-legend span{display:flex;align-items:center;gap:6px;font-family:var(--lato);font-size:12px;color:var(--text2);}
+.budget-legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+/* ─── Cars ─── */
+.car-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border);}
+.car-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.car-label{font-family:var(--lato);font-size:17px;font-weight:700;color:var(--text);}
+.car-dates{font-family:var(--lato);font-size:13px;color:var(--text2);background:#F0EDE8;border-radius:6px;padding:3px 8px;}
+.car-route{font-family:var(--playfair);font-size:22px;color:var(--text);margin-bottom:10px;}
+.car-info{font-family:var(--lato);font-size:13px;color:#666;margin-bottom:4px;}
+.car-info strong{font-weight:700;}
+.car-warn{font-family:var(--lato);font-size:13px;padding:5px 0;line-height:1.5;}
+.car-warn:first-of-type{border-top:1px solid #F0EDE8;padding-top:9px;}
+.car-warn.danger{color:#CC0000;}
+.car-warn.v6{color:#8B6914;}
+.car-warn.normal{color:#555;}
+
+/* ─── Comida ─── */
+.food-cat{margin-bottom:18px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--border);}
+.food-cat-hdr{padding:13px 15px;color:#fff;}
+.food-cat-title{font-family:var(--lato);font-size:15px;font-weight:700;letter-spacing:0.2px;}
+.food-cat-sub{font-family:var(--lato);font-size:12px;opacity:0.85;margin-top:2px;}
+.food-item{padding:12px 15px;border-top:1px solid #F4F1EC;}
+.food-item-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:5px;}
+.food-item-name{font-family:var(--lato);font-size:14.5px;font-weight:600;color:var(--text);flex:1;line-height:1.3;}
+.food-item-price{font-family:var(--mono);font-size:11.5px;font-weight:600;color:#6B3A2A;white-space:nowrap;}
+.food-item-note{font-family:var(--lato);font-size:12.5px;color:var(--text3);line-height:1.45;}
+
+/* ─── Checklist (Lembrar) ─── */
+.chk-cat{margin-bottom:18px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--border);}
+.chk-cat-hdr{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;color:#fff;}
+.chk-cat-title{font-family:var(--lato);font-size:15px;font-weight:700;letter-spacing:0.2px;}
+.chk-cat-prog{font-family:var(--mono);font-size:13px;font-weight:500;background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:6px;}
+.chk-cat-bar{height:3px;background:#F0EDE8;}
+.chk-cat-fill{height:100%;transition:width 0.3s ease;}
+.chk-item{display:flex;gap:11px;padding:12px 15px;cursor:pointer;border-top:1px solid #F4F1EC;transition:background 0.15s;}
+.chk-item:hover{background:#FAFAF7;}
+.chk-item.checked{opacity:0.55;}
+.chk-box{width:22px;height:22px;border-radius:6px;border:2px solid #CCC;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:#fff;transition:all 0.2s;margin-top:1px;}
+.chk-content{flex:1;}
+.chk-text{font-family:var(--lato);font-size:14.5px;color:var(--text);line-height:1.4;}
+.chk-item.checked .chk-text{text-decoration:line-through;}
+.chk-note{font-family:var(--lato);font-size:12px;color:var(--text3);margin-top:4px;line-height:1.4;}
+
+/* Bottom nav */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 max(8px, env(safe-area-inset-bottom));z-index:100;}
+.bnav button{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 4px;opacity:0.35;transition:opacity 0.2s;flex:1;}
+.bnav button.active{opacity:1;}
+.bnav button .ico{font-size:20px;}
+.bnav button .lbl{font-family:var(--lato);font-size:10.5px;color:var(--text);}
+.bnav button.active .lbl{font-weight:700;}
+</style>
+</head>
+<body>
+<div id="app">
+ <div class="hdr" id="hdr"></div>
+ <div class="daynav" id="daynav" style="display:none;"></div>
+ <div class="content" id="content"></div>
+ <div class="bnav" id="bnav"></div>
+</div>
+
+<script>
+// ═══ DATA ═══════════════════════════════════════════════════════════════
+const DAYS=[
+{date:"29/ago",dow:"Sáb",city:"Milão",emoji:"🏙️",color:"#2E4057",overnight:"📍 Milan Brera City Center",schedule:[{t:"17:45",a:"Pouso em MXP (Malpensa)"},{t:"~19:30",a:"Malpensa Express (~40min, €13) até Cadorna ou Centrale"},{t:"~20:00",a:"Check-in Milan Brera City Center"},{t:"21:15",a:"🥩 Jantar — Osteria Brunello (Corso Garibaldi 117) ⭐ Cotoletta alla Milanese premiada Gambero Rosso ✅ CONFIRMADO"}],food:["Cotoletta alla Milanese (Osteria Brunello)","Risotto alla Milanese","Brunello di Montalcino"],notes:"★ Osteria Brunello ✅ CONFIRMADO sáb 29/08 21:15, 2 pessoas, pagar no local. Reserva direta via WhatsApp +39 338 6175118 (TheFork só liberava até 17/08). Corso Garibaldi 117 · ~5min a pé do hotel · margem ~1h pra trocar de roupa após chegada. Cortesia: reconfirmar WhatsApp 28/ago.",cash:"Levar algum em espécie"},
+{date:"30/ago",dow:"Dom",lug:{lv:"manage",t:"Check-out do Brera de manhã, mas o trem é 20:20 — dia todo a pé. Guardar tudo no KiPoint da Milano Centrale (piso térreo da galeria, 6h-23h; ~€6/mala até 5h, +€1/h depois). Apps tipo Radical/Bounce (~€5/mala/dia) saem mais em conta pro dia inteiro. Pegar antes do trem."},city:"Milão → Tirano",emoji:"🏙️🚂",color:"#2E4057",overnight:"📍 Design Suite Tirano",schedule:[{t:"09:00",a:"Duomo di Milano — subir na terraça para vista panorâmica ⭐"},{t:"10:30",a:"Galleria Vittorio Emanuele II"},{t:"11:30",a:"Piazza della Scala + Teatro alla Scala"},{t:"13:00",a:"Almoço — Luini (panzerotto frito)"},{t:"14:30",a:"Castello Sforzesco — exterior e jardins"},{t:"15:30",a:"Bairro de Brera — galerias, cafés"},{t:"17:00",a:"🎨 A Última Ceia — Santa Maria delle Grazie ✅ PAGO"},{t:"~17:30",a:"🚕 Táxi/metrô de Santa Maria delle Grazie → Piazza XXV Aprile (~15min)"},{t:"~17:50",a:"👟 Onitsuka Tiger Flagship Store (Piazza XXV Aprile 9) — a 'Brand Theatre', 3 salas temáticas ⭐ tênis pra Lisandra (aberta até 20h)"},{t:"~19:00",a:"🚇 Metrô M2 (Moscova/Garibaldi) → Milano Centrale (~10min) · lanche/aperitivo rápido na estação antes do trem"},{t:"20:20",a:"🚂 Trenord regional Milano Centrale → Tirano (~2h30, chegada ~22:50) · preço FIXO ~€13/pessoa (~), sem tarifa promocional — comprar no app quando quiser · ⚠️ confirmar horário exato perto da data (padrão atual: saídas :20, última 21:20)"}],food:["Panzerotto (Luini)","Lanche rápido em Milano Centrale","Pizzoccheri (Tirano)"],notes:"👟 Aperitivo trocado pela FLAGSHIP Onitsuka Tiger (Piazza XXV Aprile 9, aberta todo dia 10:30–20:00) — a loja 'Brand Theatre', coladinha na Brera. Fluxo: Última Ceia 17h (~15min) → táxi/metrô ~17:30 → flagship ~17:50–19:00 → M2 até Centrale (~10min) → lanche rápido na estação → trem 20:20. Alternativa relaxada se der aperto: a La Rinascente do Duomo (na própria praça) também vende Onitsuka Tiger — dá pra passar de manhã entre o Duomo e a Scala. Pernoite em Tirano (não em Como) para pegar o Trenino Rosso direto da estação Tirano de manhã do dia 31. 📩 Chegada ~22:50 — avisar o Design Suite Tirano e combinar self check-in.",cash:"Levar algum em espécie"},
+{date:"31/ago",dow:"Seg",lug:{lv:"manage",t:"Check-out do Design Suite. Deixar as malas lá (ou locker da estação de Tirano) durante o Trenino Rosso; buscar na volta (16:08) → trem Sondrio → Carro 1."},city:"Trenino Rosso + Castelrotto",emoji:"🚂🏔️",color:"#1B4332",overnight:"📍 Cristallo B&B, Castelrotto (4 noites)",schedule:[{t:"07:30",a:"Café da manhã em Tirano. Check-out Design Suite."},{t:"08:30",a:"A pé até estação Tirano (~5min). Bilhete Trenino Rosso já comprado online (PDF/celular)"},{t:"08:58",a:"📷 🚂 Trenino Rosso Tirano → Alp Grüm ⭐ linha UNESCO Bernina, 196 viadutos + 55 túneis (~1h25)"},{t:"~10:25",a:"📷 Descer em Alp Grüm (2.091m) — mirante da estação com a vista clássica: Glaciar Palü + Lago Palü lá embaixo ⭐ café no terraço (~40min, SEM a trilha até o lago)"},{t:"~11:05",a:"📷 🚂 Trenino Rosso Alp Grüm → St. Moritz pelo Lago Bianco ⭐ ponto mais alto da linha (~1h05) — conferir minuto exato no app SBB"},{t:"~12:10",a:"Chegada St. Moritz — almoço, lago, Via Serlas (~1h35)"},{t:"13:48",a:"🚂 Trenino Rosso St. Moritz → Tirano (~2h20) UNESCO ⭐ — bilhete vale o dia todo, sem remarcar nada"},{t:"~16:08",a:"Chegada Tirano. Buscar as malas no Design Suite (~5min a pé) com calma — 1h inteira de folga"},{t:"~17:08",a:"🚂 Regional Tirano → Sondrio (~30min, saídas ~:08–:12 — conferir no app Trenord) · táxi (~€50–60) vira só emergência"},{t:"~17:40",a:"Chegada Sondrio. A pé até AVIS Viale Stadio 28 (~10min)"},{t:"~18:00",a:"🚗 Retirar Carro 1 — AVIS Sondrio (reservado) · reserva é 18:30; chegar antes só ajuda"},{t:"~18:30",a:"🚗 Saída Sondrio → Castelrotto pela SS38 + A22 (~3h30)"},{t:"~22:00",a:"Chegada Castelrotto — check-in Cristallo B&B 🏔️"},{t:"~22:30",a:"Jantar leve no hotel ou nas redondezas"}],food:["Pizzoccheri della Valtellina (almoço St. Moritz se possível) ★","Bresaola della Valtellina IGP","Canederli (jantar tardio Castelrotto)"],notes:"★ Trenino Rosso (regional) em vez do Bernina Express: bilhete válido o dia inteiro, janelas que abrem (melhor pra filmagem), sem reserva, mais flexibilidade. Mesmas paisagens UNESCO. ★ Alp Grüm sem a trilha (decisão 05/07): o mirante da estação já entrega a vista-cartão-postal do Lago Palü + glaciar; cortar a descida (~1h) antecipou tudo — volta de St. Moritz às 13:48, Tirano 16:08, AVIS ~18:00 com meia hora de sobra antes da reserva. Até um atraso de ~40min no RhB não muda nada. ⚠️ Dia longo, chegada noturna em Castelrotto (~22:00) — dirigir descansado. Pickup AVIS reservado 18:30 — tolerância 29min, ligar +39 345 144 8991 se atrasar. ⚠️ AVIS Sondrio: fontes divergem se fecha 18:30 ou 19:00 na segunda — no e-mail (sondrio.sl7@abg.com), avisar que chegam de trem ~17:40 e perguntar se podem retirar ~18:00. 📩 Avisar o Cristallo B&B da chegada ~22:00.",cash:"Levar algum em espécie"},
+{date:"01/set",dow:"Ter",city:"Dolomitas (Passo Sella)",emoji:"🏔️",color:"#1B4332",overnight:"📍 Cristallo B&B, Castelrotto",schedule:[{t:"08:00",a:"Café da manhã (Rösti com speck e ovo!)"},{t:"09:00",a:"📷 Castelrotto → Passo Sella pela SS242 — estrada serpenteante com vista das Dolomitas (~30min)"},{t:"09:30",a:"📷 Rifugio Friedrich August — café + Krapfen 🍩 vista Sassolungo ⭐"},{t:"11:30",a:"📷 Passo Sella — panorama 360° dos picos icônicos das Dolomitas"},{t:"12:30",a:"Almoço em Ortisei ou Castelrotto"},{t:"14:30",a:"📷 Teleférico Compatsch → Alpe di Siusi ⭐ (sai de Castelrotto!) — maior planalto alpino da Europa"},{t:"18:30",a:"📷 Lago di Carezza — água esmeralda ao entardecer 💎 reflexo dos picos no espelho d'água"},{t:"20:00",a:"Jantar — Schlutzkrapfen e vinho do Alto Adige"}],food:["Krapfen no Rifugio Friedrich August","Schlutzkrapfen","Speck Alto Adige IGP"],notes:"Castelrotto tem acesso direto ao Alpe di Siusi via teleférico de Compatsch. Noites em setembro chegam a 5°C.",cash:"Levar algum em espécie"},
+{date:"02/set",dow:"Qua",city:"Dolomitas (Tre Cime)",emoji:"🏔️",color:"#1B4332",overnight:"📍 Cristallo B&B, Castelrotto",schedule:[{t:"06:30",a:"Saída cedo de Castelrotto"},{t:"07:00",a:"📷 Cinema delle Odle (Val di Funes) — luz da manhã nos picos ⭐ Patrimônio UNESCO"},{t:"09:30",a:"📷 De carro para Tre Cime via Misurina (~1h15) — uma das paisagens mais icônicas dos Alpes"},{t:"10:30",a:"📷 🥾 Trilha circular Tre Cime di Lavaredo (~10km, 3h) ⭐ Pedágio ~€30"},{t:"13:30",a:"Almoço Rifugio Auronzo ou Lavaredo"},{t:"15:00",a:"📷 Lago di Misurina — espelho d'água com vista dos Tre Cime ao fundo (~15min)"},{t:"18:30",a:"Retorno a Castelrotto (~1h30)"}],food:["Rösti com uova e speck","Strudel di mele"],notes:"Dia mais longo nas Dolomitas. Sair cedo é essencial para luz boa nas Odle. ⚠️ A estrada do Rifugio Auronzo fecha temporariamente quando o estacionamento lota (pode acontecer no meio da manhã) — Plano B: estacionar em Misurina/Antorno e subir de shuttle (linha 444).",cash:"Levar algum em espécie"},
+{date:"03/set",dow:"Qui",city:"Dolomitas (Braies)",emoji:"🏔️",color:"#1B4332",overnight:"📍 Cristallo B&B, Castelrotto",schedule:[{t:"06:30",a:"Saída de Castelrotto (mais cedo — garante vaga antes de lotar ~8h)"},{t:"08:00",a:"📷 Lago di Braies ⭐ — SEM reserva (acesso livre antes das 9h) · chegar ~8h pela vaga (loteia cedo) · volta a pé pela margem primeiro (barcos abrem ~9h-10h) · 'pérola das Dolomitas'"},{t:"11:00",a:"📷 Lago di Anterselva — selvagem, pouco turístico 💎 águas turquesa cristalina"},{t:"12:30",a:"Almoço num rifugio em Anterselva"},{t:"14:30",a:"Retorno a Castelrotto"},{t:"~19:00",a:"📷 🌅 Enrosadira — picos cor de rosa/laranja ⭐ fenômeno só visto nas Dolomitas"},{t:"Noite",a:"Última noite no Cristallo B&B"}],food:["Canederli","Speck","Vinho Alto Adige"],notes:"🅿️ Braies 2026: restrição 9h–16h (01/07–15/09) só com reserva. PLANO: chegar ANTES das 9h → acesso livre, SEM os €44 do prags.bz. Mas os estacionamentos lotam cedo (~8h em alta estação), então mirar estar no lago ~8h (saída 6h30) pra garantir vaga; paga só o estacionamento normal (~€6-8). O amanhecer é a melhor hora (reflexo, névoa, sem gente; nascer do sol ~6h45). Os barcos a remo abrem ~9h-10h — fazer a volta a pé pela margem primeiro. Se preferir garantir vaga em horário certo, aí sim vale o combinado €44 (inclui €22 de voucher nos restaurantes do lago; nesse caso atualizar a placa do Carro 1 no dia 31). Última noite em Castelrotto antes da ciclovia + Garda no dia 04.",cash:"Levar algum em espécie"},
+{date:"04/set",dow:"Sex",lug:{lv:"transfer",t:"No porta-malas o dia todo. Durante a bike na Drava, nada de valor à vista no carro parado."},city:"Ciclovia → Lago di Garda",emoji:"🚴🌊",color:"#1B4332",overnight:"📍 Village Bazzanega, Tremosine sul Garda",schedule:[{t:"07:30",a:"Check-out Cristallo B&B"},{t:"07:45",a:"📷 Carro Castelrotto → Dobbiaco pela SS49 — estrada alpina pelo Val Pusteria (~1h15)"},{t:"09:00",a:"Estacionar carro em Dobbiaco. Alugar bikes (Sportler/Intersport)"},{t:"09:30",a:"📷 🚴 Ciclovia Drava — 50km descida suave Dobbiaco → Lienz pelo vale do rio Drava ⭐ uma das ciclovias mais bonitas da Europa (~3h30)"},{t:"~13:00",a:"Chegada Lienz, Áustria — almoço austríaco 🍺"},{t:"~15:00",a:"🚂 Trem Lienz → Dobbiaco com bikes (~1h)"},{t:"~16:00",a:"Devolver bikes em Dobbiaco. Pegar carro."},{t:"16:30",a:"📷 Dobbiaco → Tremosine pela A22 (Brennerautobahn) — atravessa o coração dos Alpes italianos (~3h45)"},{t:"~20:15",a:"Chegada Tremosine — check-in Village Bazzanega 🌄"},{t:"~21:00",a:"Jantar com vista do platô (430m acima do lago)"}],food:["Almoço austríaco em Lienz","Jantar lacustre — peixe do lago e vinho Lugana"],notes:"★ Tremosine sul Garda: comuna no platô a 430m acima do lago, vista panorâmica única (Terrazza del Brivido em Pieve). Subida ao platô por Limone/Bassanega — desde 13/03/2026 a Strada della Forra é senso único de SUBIDA e fica pra manhã seguinte, em loop com luz do dia. 📩 Avisar o Village Bazzanega da chegada ~20:15. Dia ativo: ciclovia + dirigir.",cash:"Levar algum em espécie"},
+{date:"05/set",dow:"Sáb",lug:{lv:"transfer",t:"No porta-malas no Garda. Devolve o Carro 1 no aeroporto de Verona → Aerobus até Porta Nuova. Jantar + Arena: leve as malas (é perto) ou deposite no KiPoint da estação e pegue antes do trem. Em Veneza (~22h25), People Mover → Tronchetto (último sáb ~22:50; se perder, vaporetto noturno linha N)."},city:"Garda → Veneza",emoji:"🌊⛵",color:"#0A3D62",overnight:"📍 B&B Hotel Venezia Laguna, Tronchetto (2 noites)",schedule:[{t:"08:00",a:"Café da manhã no Village Bazzanega. Check-out."},{t:"08:30",a:"📷 Descida Tremosine → Limone pela estrada de Bassanega (~20min) — ⚠️ a Forra NÃO desce mais (senso único de subida desde 13/03/2026)"},{t:"08:55",a:"🚗 Gardesana sul até a entrada da Strada della Forra (~5min)"},{t:"09:00",a:"📷 🎬 SUBIDA pela Strada della Forra → Pieve (~20min com paradas) ⭐ canyon do Brasa, cenário Quantum of Solace — no sentido único permitido"},{t:"09:25",a:"📷 Terrazza del Brivido, Pieve — varanda a 350m sobre o lago ⭐"},{t:"09:50",a:"Descida de volta por Bassanega → Limone (~20min)"},{t:"10:15",a:"🚴 Limone — alugar bikes e fazer a passerella suspensa Capo Reamol (~5km, 1h–1h15) ⭐ ícone do Garda"},{t:"11:45",a:"Limone centro — limoneiros históricos, café rápido no porto 🍋"},{t:"12:30",a:"📷 Limone → Salò pela costa oeste SS45bis — estrada beira-lago entre falésias e túneis (~45min)"},{t:"13:30",a:"Almoço em Salò — peixe do lago + vinho Lugana 🍷"},{t:"15:30",a:"🚗 Salò → Sirmione (~30min)"},{t:"16:00",a:"Sirmione — Rocca Scaligera + Grotte di Catullo + orla (~1h30)"},{t:"17:30",a:"🚗 Sirmione → Aeroporto Verona (Villafranca) (~50min)"},{t:"18:30",a:"Devolver Carro 1 — AVIS Aeroporto Verona (Via Aeroporto 1)"},{t:"19:00",a:"Bus aeroporto → Verona Porta Nuova (~15min)"},{t:"~19:15",a:"🍝 Jantar no Amido — Pasta e Salsa (Corso Porta Nuova 74, ~500m da estação) ⭐ massa fresca + tiramisù · ⚠️ CONFIRMAR que abre sáb à noite (IG @amido.verona / 045 693 3812)"},{t:"~20:05",a:"🚶 Caminhada rápida subindo a Corso Porta Nuova até a Piazza Bra — 📷 Arena de Verona iluminada + uns passos na Via Mazzini (~30min)"},{t:"~20:45",a:"Volta a pé até a estação Porta Nuova (~13min)"},{t:"~21:00",a:"🚂 Regionale Veloce Porta Nuova → Venezia Santa Lucia (~1h25, €11/pessoa fixo) — pegar ESTE (~21h, não mais tarde) por causa do último People Mover"},{t:"~22:25",a:"Chegada Santa Lucia — ir DIRETO pro People Mover (Piazzale Roma → Tronchetto; último sáb ~22:50, a cada 10min, €1,50)"},{t:"~22:50",a:"People Mover → Tronchetto · check-in B&B Venezia Laguna 🏨 (jantar já feito)"}],food:["Vinho Lugana","Peixe do lago em Salò (almoço)","Massa fresca + tiramisù no Amido, Verona (jantar)"],notes:"🔁 FORRA EM LOOP: desde 13/03/2026 a Forra é senso único permanente de SUBIDA (Gardesana → ristorante La Forra); descida ao lago só por Bassanega/Tignale. Roteiro: desce por Bassanega → sobe a Forra → Terrazza del Brivido (Pieve) → desce de novo → bikes em Limone 10:15. Custo ~45min, absorvido saindo 8:30 e enxugando o café em Limone. ★ Drop-off em Verona Aeroporto (taxa zero). 🍝 JANTAR + VERONA RELÂMPAGO: mantém Sirmione, devolve o carro no aeroporto 18h30, Aerobus até Porta Nuova, janta no Amido — Pasta e Salsa (Corso Porta Nuova 74, ~500m da estação) ~19h15, e sobe a Corso Porta Nuova pra ver a Arena iluminada na Piazza Bra (~30min — o 'estivemos em Verona'). Trem ~21h (pegar ESTE, não mais tarde) → Veneza ~22h25. 🚡 TRONCHETTO à noite: chegando ~22h25, vá DIRETO pro People Mover (Piazzale Roma→Tronchetto), que no sábado roda até ~23h (último ~22:50, a cada 10min, €1,50); se perder, o vaporetto noturno (linha N) também serve o Tronchetto. Por isso o trem das 21h — um mais tarde arrisca o último People Mover. ⚠️ CONFIRMAR direto (IG @amido.verona ou 045 693 3812) que abre sábado à noite (19–22h) — é o que sustenta este plano. Plan B se não abrir: comer algo perto de Porta Nuova, ou pegar o trem ~19h30 e fazer cicchetti no Do Mori em Veneza (até 22h30). Obs: o OUTRO Amido, o 'Pasta & Tiramisù' da Via Pellicciai, é SÓ almoço (12–16h).",cash:"Levar algum em espécie"},
+{date:"06/set",dow:"Dom",city:"Veneza",emoji:"🌊",color:"#0A3D62",overnight:"📍 B&B Hotel Venezia Laguna, Tronchetto",schedule:[{t:"08:00",a:"Praça e Basílica de São Marcos ⭐"},{t:"09:30",a:"Palácio Ducal ⭐ (reservar online — palazzoducale.visitmuve.it, ~€30/pp, inclui Museo Correr)"},{t:"11:30",a:"Ponte dei Sospiri"},{t:"12:30",a:"Almoço fora da área turística — Castello/Cannaregio"},{t:"14:00",a:"🛶 Passeio de gôndola (~30min, ~€80–90)"},{t:"15:00",a:"Vaporetto → Burano (~45min) — casas coloridas 🎨"},{t:"17:30",a:"Retorno de Burano"},{t:"19:30",a:"Spritz veneziano 🍊"},{t:"20:00",a:"🐟 Jantar — 🔶 DECIDIR com Lisandra: Al Covo (Castello, refinado, fecha ter/qua, cozinha até 22h, reserva online) OU Vini da Gigio (Cannaregio, trattoria + adega, fecha seg/ter, tel/e-mail) — ❌ Testiere fecha dom"}],food:["Baccalà mantecato","Sarde in saor","Risi e bisi"],notes:"Hospedagem em Tronchetto — vaporetto direto para Veneza histórica. Evitar restaurantes com cardápio ilustrado perto de San Marco. ❌ Osteria alle Testiere fecha DOMINGO (e segunda) — jantar substituído: decidir com Lisandra entre Al Covo e Vini da Gigio e reservar ~início de agosto.",cash:"Levar algum em espécie"},
+{date:"07/set",dow:"Seg",lug:{lv:"transfer",t:"Carregar do Tronchetto → trem pra Florença → largar no Plus Florence ANTES da Cúpula das 14:15 (mochila proibida; guarda-volumes Piazza Duomo 38/r)."},city:"Florença",emoji:"🎨",color:"#6B3A2A",overnight:"📍 Plus Florence · Via Santa Caterina d'Alessandria 15",schedule:[{t:"06:30",a:"Passeio matinal por Veneza (sem turistas)"},{t:"08:05",a:"🚄 Italo 8905 Veneza → Florença (08:05→10:20) ✅ COMPRADO · reservado · coche 6, assentos 11/12"},{t:"~10:20",a:"Chegada Florença Santa Maria Novella — a pé até Plus Florence (~10min) · deixar malas (hotel ou guarda-volumes Piazza Duomo 38/r — mochila proibida na Cúpula)"},{t:"12:30",a:"Almoço — Trattoria Mario 🥩"},{t:"14:15",a:"⛪ Cúpula de Brunelleschi ⭐ ✅ COMPRADO (14:15 EM PONTO, improrrogável · levar passaporte · Porta della Mandorla) — 463 degraus"},{t:"~15:45",a:"Battistero (⚠️ mosaicos em restauro) + Campanile di Giotto (414 degraus) — inclusos no pass"},{t:"17:30",a:"Piazzale Michelangelo — vista panorâmica 🌅"},{t:"20:00",a:"Jantar — Antico Ristorante Paoli (reservar!)"}],food:["Bistecca alla Fiorentina","Lampredotto (€1 — Mercato Centrale)","Ribollita"],notes:"⚠️ Uffizi e Accademia FECHAM segunda (07/set é seg!) — por isso a tarde fica com Cúpula+Duomo (abertos seg). Davi (Accademia) e Uffizi foram pra manhã de terça. Aproveitar Veneza de manhã cedo antes do trem. Plus Florence: hostel/hotel híbrido, 8.3/10 Booking, ~600m da Accademia.",cash:"Levar algum em espécie"},
+{date:"08/set",dow:"Ter",lug:{lv:"manage",t:"Check-out do Plus Florence. Deixar as malas na recepção durante Accademia + Uffizi (museu não aceita mala grande) — ou no KiPoint/locker da estação SMN, ao lado da Hertz. Buscar antes da retirada Hertz às 12h."},city:"Florença → Chianti",emoji:"🍷",color:"#6B3A2A",overnight:"📍 L'Ultimo Mulino, Gaiole in Chianti",schedule:[{t:"08:15",a:"🖼️ Galleria dell'Accademia — Davi de Michelangelo ⭐ ✅ COMPRADO (entrada 8:15–8:30, chegar 8:05 · reservado)"},{t:"10:00",a:"🖼️ Galleria degli Uffizi ⭐ ✅ COMPRADO (slot 10:00, folga após Accademia) — ~2h destaques: Botticelli, Leonardo, Rafael, Caravaggio"},{t:"~11:30",a:"Panino rápido no Mercato Centrale a caminho da locadora"},{t:"12:00",a:"🚗 Pegar Carro 2 — AVIS, Via Maso Finiguerra (⚠️ ZTL Florença! GPS 'evitar ZTL')"},{t:"12:15",a:"📷 SR222 Chiantigiana Florença → Greve in Chianti (~45min, GPS 'evitar pedágios')"},{t:"13:00",a:"🍷 Almoço leve + taça de Chianti na Enoteca Falorni, Greve (no lugar do Borgo Machiavelli)"},{t:"14:30",a:"🚗 Greve → Panzano (~15min)"},{t:"14:45",a:"Panzano centro — Antica Macelleria Cecchini (loja — ⚠️ confirmar horário, açougues podem ter pausa pranzo)"},{t:"15:30",a:"📷 SP408 Panzano → Gaiole — Castello di Brolio no horizonte (~30min)"},{t:"16:00",a:"Check-in L'Ultimo Mulino — moinho de 1400, descanso"},{t:"18:30",a:"🚗 Sair pra Panzano (~25min via SP2bis)"},{t:"19:00",a:"🌅 Aperitivo Cecchini na açougueria — golden hour (pôr do sol Chianti 19:33) ✅ CONFIRMADO"},{t:"20:00",a:"🥩 Officina della Bistecca — jantar Dario Cecchini ⭐ ✅ CONFIRMADO (, pagar local)"},{t:"~22:00",a:"Fim do jantar"},{t:"~22:30",a:"🚗 Volta pro hotel (~25min, estrada já escura)"}],food:["Almoço leve + taça na Enoteca Falorni (Greve)","Bistecca alla Fiorentina (Cecchini Officina à noite)","Vinhos do Chianti Classico"],notes:"📌 FLORENÇA RESOLVIDA: Uffizi e Accademia fecham seg, então Cúpula+Duomo ficaram na seg (07/set) e Davi + Uffizi na manhã de ter (08/set). Uffizi em ~2h ritmo destaques — chegar com mini-roteiro decidido. ❌ BORGO MACHIAVELLI REMOVIDO: provavelmente fechado (Google 'temporariamente fechado' + relato recente de visitante; site e telefone fora do ar). No lugar: almoço leve + taça na Enoteca Falorni, em Greve (sem reserva). ★ Cecchini ✅ CONFIRMADO ter 08/09 · 19h aperitivo + 20h jantar · €100 a pagar local · alergia abacaxi anotada · ⚠️ RECONFIRMAR 06 ou 07/set via WhatsApp +39 331 586 9063 ou e-mail (sem isso reserva pode ser cancelada). ⚠️ Cecchini política rígida: mesa comunitária, atrasos NÃO acomodados. Sair do hotel 18:30 (não 19:30!) pra chegar 19:00 aperitivo. ⚠️ ZTL Florença ao pegar Carro 2 — GPS 'evitar ZTL'. Almoço leve de propósito: o jantar Cecchini é enorme.",cash:"Levar algum em espécie"},
+{date:"09/set",dow:"Qua",lug:{lv:"manage",t:"No Carro 2 até Orvieto. Devolve o carro ~16h → guardar no Info Point da Piazza della Pace (~€5/mala) na golden hour → trem pra Roma."},city:"Val d'Orcia → Roma",emoji:"🌅🏛️",color:"#4A1942",overnight:"📍 Vatican Town, Roma (Prati) — 5 noites",schedule:[{t:"08:00",a:"Café da manhã no L'Ultimo Mulino — manhã sem pressa (dia todo com folga agora)"},{t:"~09:00",a:"Pienza — walk no centro medieval, Pecorino na bottega 🧀"},{t:"~09:45",a:"📷 PARADA-FOTO: Cappella di Vitaleta — capela com ciprestes ⭐ Coord: 43.0747, 11.6373"},{t:"~10:15",a:"📷 SP146 Pienza→Montalcino — uma das estradas mais bonitas do mundo (~30min)"},{t:"~10:45",a:"Montalcino — belvedere + enoteca/degustação Brunello 🍷 (comprar garrafa — beber na viagem, ver nota Ryanair)"},{t:"~12:30",a:"Almoço no Val d'Orcia / Montalcino (sem correria)"},{t:"~14:15",a:"🚗 Saída Val d'Orcia → Orvieto via SR2 + A1 (~1h15)"},{t:"~15:45",a:"🔑 Chegada Orvieto Scalo — devolver Carro 2 na Hertz (Via Sette Martiri, ao lado da estação) · ⚠️ Hertz reabre 15h após o almoço, fecha 19h"},{t:"~16:15",a:"🧳 Guardar as malas no Info Point da Piazza della Pace (~€5/mala, ao lado da estação/funicular)"},{t:"~16:30",a:"🚡 Funicular pra cima (em frente à estação) → centro histórico"},{t:"~16:45",a:"⛪ Duomo de Orvieto (fachada gótica ⭐ + interior Signorelli), Pozzo di San Patrizio, vielas"},{t:"~18:45",a:"📷 GOLDEN HOUR na fachada do Duomo ⭐ (pôr do sol ~19:30) — o auge de Orvieto"},{t:"~19:45",a:"🚡 Funicular pra baixo, pegar as malas"},{t:"~20:00",a:"🚆 Trem regional Orvieto → Roma Termini (~1h20, ~€10/pessoa, tarifa fixa — comprar na hora) — SEM dirigir em Roma 🎉"},{t:"~21:20",a:"Chegada Roma Termini → táxi/metrô pro Vaticano (~20min)"},{t:"~22:00",a:"Check-in Vatican Town (Via Properzio) — noite curta antes do Coliseu 8:30"}],food:["Pecorino di Pienza DOP (compra na bottega)","Brunello di Montalcino 2018/2019 (comprar garrafa)","Almoço no Val d'Orcia / Montalcino","Aperitivo em Orvieto ao entardecer (opcional, antes do trem)"],notes:"★ Dia mais cênico da viagem: Val d'Orcia UNESCO. ★ Cappella di Vitaleta: parada de 5min na SP146 (coord 43.0747, 11.6373). 🚆 PLANO NOVO (Orvieto + trem): o Carro 2 é devolvido em ORVIETO (Hertz, Via Sette Martiri, ao lado da estação), não em Roma — daí sobe-se de funicular ao centro histórico, curte-se o Duomo na golden hour e vai-se de trem pra Roma, SEM dirigir na cidade (nem GRA, nem ZTL). Como o carro é entregue ~16h e a golden hour é a pé, o fechamento da Hertz (19h) não aperta. ⚠️ Hertz Orvieto fecha no almoço 13–15h — devolver depois das 15h; multa se passar do horário reservado (marcar ~16h). 🧳 Guarda-volumes no Info Point da Piazza della Pace (~€5/mala). 🚆 Trem regional Orvieto→Roma Termini: tarifa fixa ~€10/pessoa, de hora em hora, comprar na hora — pega o que quiser depois do entardecer (último ~22:25). ⚠️ Chegada em Roma ~22h na véspera do Coliseu 8:30: se quiser noite mais folgada, pega um trem ~18:45 e chega ~21h (Orvieto com luz de fim de tarde, sem o pico). 🍷 Brunello: o voo Ryanair do dia 19 é só cabine (líquido não passa na segurança) — beber na viagem, comprar mala despachada nesse voo, ou comprar no duty-free de MXP no dia 20.",cash:"Levar algum em espécie"},
+{date:"10/set",dow:"Qui",city:"Roma",emoji:"🏛️",color:"#4A1942",overnight:"📍 Vatican Town, Roma (Prati)",schedule:[{t:"08:00",a:"Chegada Coliseu (entrada/segurança antes da abertura)"},{t:"08:30",a:"🏛️ Colósseo ⭐ slot 8:30 — Full Experience Arena + Attico recomendado (piso da arena + 5° andar) ⚠️ reservar 11/08 às 04h BRT (janela 30 dias)"},{t:"10:30",a:"Foro Romano + Palatino — Templos de Saturno, Vestais, Estádio do Palatino"},{t:"12:00",a:"Circo Massimo — vista do alto (~15min, entre Palatino e almoço)"},{t:"12:30",a:"Almoço Testaccio — Flavio al Velavevodetto"},{t:"14:30",a:"🏛️ Museus Capitolinos ⭐ — Loba Capitolina, Marco Aurélio (~2h)"},{t:"16:30",a:"Piazza del Campidoglio (desenhada por Michelangelo)"},{t:"16:45",a:"Piazza Venezia + Altar da Pátria (Vittoriano) — passagem"},{t:"17:15",a:"Aventino — buraco da fechadura → vista Vaticano 🔑"},{t:"17:30",a:"Santa Sabina + Giardino degli Aranci 🍊 — vista panorâmica"},{t:"~18:00",a:"Descida do Aventino → Ponte Palatino → Trastevere (~12min a pé — o Da Enzo fica logo do outro lado do rio)"},{t:"18:15",a:"🍝 Fila no Da Enzo al 29 (Via dei Vascellari 29) — abre 18:30, SEM reservas, a fila forma antes"},{t:"18:30",a:"Jantar — Da Enzo al 29 ⭐ carbonara, amatriciana, carciofi, porções generosas"},{t:"~20:00",a:"🌿 Passeggiata noturna por Trastevere — Santa Maria in Trastevere, Piazza Trilussa, vielas (o bairro no auge à noite)"},{t:"~21:30",a:"Volta pro Vatican Town (táxi ~10min · ~€12)"}],food:["Cacio e pepe","Carbonara (sem creme!)","Supplì al telefono","Carciofi alla giudia"],notes:"Os 4 pilares da pasta romana: Cacio e pepe, Carbonara, Amatriciana, Gricia. Capitolinos ficam a 10min a pé do Foro Romano. ⚠️ Coliseu: bilhete NOMINAL, levar passaporte. Bots saqueiam slots Full Experience em minutos — reservar IMEDIATAMENTE quando janela abrir (11/08 04h BRT). Backup: Arena solo → Ordinario. 🍝 Da Enzo NÃO aceita reservas (12–15h / 18:30–22:30, fecha dom): jantar cedo 18:30 (fila 18:15) e a passeggiata por Trastevere fica pra DEPOIS do jantar — o bairro no auge.",cash:"Levar algum em espécie"},
+{date:"11/set",dow:"Sex",city:"Roma",emoji:"🏛️",color:"#4A1942",overnight:"📍 Vatican Town, Roma (Prati)",schedule:[{t:"08:00",a:"🎨 Museus do Vaticano + Capela Sistina ⭐ slot 8:00 — ~4h confortáveis ✅ COMPRADO"},{t:"12:00",a:"Basílica de São Pedro + subir na Cúpula"},{t:"13:30",a:"Almoço Prati — Osteria dell'Angelo (100% local)"},{t:"15:00",a:"Castel Sant'Angelo"},{t:"16:30",a:"Pantheon ⭐ (reservar online €5 · museiitaliani.it)"},{t:"17:15",a:"Templo de Adriano — fachada de colunas (passagem de 2min)"},{t:"17:30",a:"Piazza Navona — Bernini"},{t:"18:30",a:"Fontana di Trevi — fim da tarde = menos gente 🪙"},{t:"20:00",a:"Jantar — Roscioli (Campo de' Fiori, reservar)"}],food:["Maritozzo con panna (café da manhã)","Amatriciana"],notes:"⚠️ Vaticano: dress code rigoroso (ombros + joelhos cobertos), mochilas grandes proibidas (guarda-volumes obrigatório). Bilhete ✅ COMPRADO: (reservado), slot 8h. App Rick Steves Audio Europe tem áudio-tour gratuito ótimo das Stanze + Sistina. Osteria dell'Angelo: perto do hotel, menu fixo, clientela local. Templo de Adriano fica entre o Pantheon e Piazza Navona.",cash:"Levar algum em espécie"},
+{date:"12/set",dow:"Sáb",city:"Nápoles (bate-volta)",emoji:"🍕",color:"#4A1942",overnight:"📍 Vatican Town, Roma (Prati)",schedule:[{t:"07:35",a:"🚄 Frecciarossa Roma → Nápoles (~1h10) · Super Economy ~ ⚠️ comprar 4-6 sem antes (~01/ago)"},{t:"08:45",a:"Circumvesuviana → Pompeia (~30min) ⚠️ bolsas na frente!"},{t:"09:15",a:"🏛️ Pompeia ⭐ — Foro, Casa dei Vettii, moldes das vítimas (~4h)"},{t:"13:15",a:"Trem Pompeia → Napoli Centrale"},{t:"14:00",a:"🍕 Pizza — Da Michele (15min a pé do Centrale) ou Sorbillo"},{t:"15:15",a:"Spaccanapoli + Via San Gregorio Armeno (rua dos presépios)"},{t:"16:00",a:"🩻 Cappella Sansevero — Cristo Velato ⭐ ✅ RESERVADO () · e-ticket no celular · fila dedicada, válido até 16:10 · sem fotos dentro"},{t:"16:45",a:"Centro histórico — Duomo Napoli, San Domenico Maggiore, Via dei Tribunali (~1h15)"},{t:"18:00",a:"Metrô L1 → Lungomare (Castel dell'Ovo)"},{t:"~19:15",a:"🌅 Pôr do sol sobre o Vesúvio do Lungomare ⭐ (em 12/set: ~19:15)"},{t:"19:25",a:"Táxi/metrô Lungomare → Napoli Centrale (~20min) — folga confortável até o trem"},{t:"20:00",a:"🚄 Frecciarossa Nápoles → Roma (~1h10) · Economy ~€60-70 casal (flexível, altera por ~€10) ⚠️ AJUSTADO de 19h pra 20h pra pegar golden hour Lungomare"},{t:"~21:10",a:"Chegada Roma Termini"}],food:["Pizza Da Michele (Marinara e Margherita desde 1870)","Sfogliatella riccia (Scaturchio ou Pintauro)","Babà ao rum"],notes:"🏃 LEMBRETE HOJE (sáb): mandar mensagem no Facebook pra Bravetta Runners com os TAMANHOS das camisetas de vocês dois — retiram junto com os números amanhã de manhã. ⚠️ Nápoles = cidade mais cash da Itália. €60–80 em espécie. ★ Sansevero: pegar audioguia par (€6 total) — simbolismo maçônico/alquímico do Príncipe Raimondo di Sangro, sem narração você não entende 80%. Fotos não permitidas dentro da capela. ★ Trem 20h em vez de 19h: pega golden hour completo no Lungomare (pôr do sol em 12/set ~19:15; golden hour ~18:40–19:15) e sobra folga tranquila até o embarque. Diferença ~€10 mais cara que 19h vale o show do Vesúvio dourado.",cash:"Levar algum em espécie"},
+{date:"13/set",dow:"Dom",city:"Roma (último dia)",emoji:"🏛️",color:"#4A1942",overnight:"📍 Vatican Town, Roma (Prati)",schedule:[{t:"07:30",a:"🏃 Retirada do número — Corri Bravetta, Via dei Capasso (7h30–8h30) + camisetas (tamanhos avisados no sábado)"},{t:"09:00",a:"🏃 Largada Corri Bravetta 10km ⭐ (Villa Pamphili) · ~fim 10h–10h30"},{t:"~11:00",a:"🚖 Volta pra Prati — banho + descanso pós-corrida"},{t:"12:30",a:"Almoço leve em Prati / perto de Villa Borghese"},{t:"~15:00",a:"🎨 Galleria Borghese ⭐ slot da TARDE (13h ou 15h) — Bernini, Caravaggio + mostra Metamorfosi (até 20/set) ⚠️ reservar slot de tarde ~02/08 (rolling 5-6 sem) — NÃO 11h por causa da corrida"},{t:"~17:15",a:"Terrazza del Pincio + Piazza del Popolo"},{t:"18:00",a:"Via Margutta — rua mais boêmia 🎬 + Piazza di Spagna (se der tempo)"},{t:"18:30",a:"🚖 Táxi → Trastevere (~10min · ~€10) — concentra a noite em Trastevere"},{t:"19:00",a:"🍷 Aperitivo em Trastevere — Freni e Frizioni ou Bar San Calisto (autêntico, popular, vibe local)"},{t:"19:45",a:"🍝 La Tavernetta 29 da Tony e Andrea ⭐ — Via della Pelliccia 29a (Trastevere) · carbonara lendária · ⚠️ NÃO aceita reservas — chegada cedo anti-fila"},{t:"~22:00",a:"Fim do jantar"},{t:"~22:30",a:"🚶 Caminhada noturna Trastevere → Vatican Town via Ponte Sisto + Ponte Vittorio Emanuele II (~15min, atravessa o Tibre — fechamento icônico de Roma)"}],food:["Gricia","Carbonara lendária na Tavernetta 29","Supplì de rua (€2)"],notes:"🏃 CORRI BRAVETTA CONFIRMADA (2 inscritos,): retirada 7h30–8h30 na Via dei Capasso (NÃO em Fiumicino!), largada 9h. ⚠️ POR ISSO a Borghese foi pra tarde — impossível correr 10km e chegar apresentável na Borghese às 11h do outro lado da cidade. Reservar slot de tarde quando a janela abrir — PRIORIZAR 15h (13h conflita com o almoço pós-corrida). ⚠️ Borghese: visita EXATAMENTE 2h (depois te tiram), não reembolsável — chegar 20min antes, guarda-volumes obrigatório. ★ Mostra Metamorfosi: parceria Rijksmuseum, 80+ obras Correggio/Tiziano/Rubens/Rodin. ★ La Tavernetta 29: 4.9★ Restaurant Guru, aceita cartões e cash · turno da noite abre 19h (chegada 19:45 pega o começo). ⚠️ Plan B de DOMINGO: Tonnarello (aberto todos os dias, 3min) — Da Enzo fecha dom. Amanhã começa o sul — Matera e Puglia.",cash:"Levar algum em espécie"},
+{date:"14/set",dow:"Seg",lug:{lv:"transfer",t:"Check-out do hotel em Roma → malas no trem até Caserta → guarda-volumes GRÁTIS da Reggia durante a visita → carro na estação → porta-malas até Matera. Chegada em Matera: Sasso Caveoso é escadaria — estacionar fora e descer as malas a pé (mais fácil de dia, ~15h30)."},city:"Roma → Matera",emoji:"🏰",color:"#8B6914",overnight:"📍 Le Dimore Dell' Idris, Matera",schedule:[{t:"~07:30",a:"🚂 Trem Roma → Caserta (InterCity direto, ~1h40) · comprar 2-3 dias antes no app Trenitalia"},{t:"~09:15",a:"Chegada Caserta — malas no guarda-volumes GRÁTIS da Reggia (entrada Piazza Carlo di Borbone, 8h30-19h)"},{t:"~09:30",a:"🏛️ Reggia di Caserta ⭐ — Aposentos Reais (~1h30) + gostinho dos jardins (trenzinho/bike). ⚠️ NÃO passar das 12h30 — balcão do carro fecha 13h"},{t:"~12:00",a:"🚗 Retirar Carro 3 na Budget da Estação de Caserta (Piazza Garibaldi 2/5, ~5min do palácio) — dentro da janela da manhã (antes das 13h)"},{t:"~12:30",a:"Caserta → Matera (~3h pela A16/A14) — almoço rápido na estrada"},{t:"~15:30",a:"Chegada Matera — check-in Le Dimore Dell' Idris (Sasso Caveoso, ~500m do centro). Tarde e noite livres 🎉"},{t:"~16:00",a:"🕳️ Palombaro Lungo (Piazza Vittorio Veneto) — cisterna subterrânea gigante, a 'catedral de água' ⭐ €3/pp · ~30min · sem reserva (bilhete na hora) · aberto até 18h · levar casaquinho"},{t:"~16:45",a:"Sasso Caveoso + Sasso Barisano — vielas + Igreja rupestre Santa Maria de Idris"},{t:"18:30",a:"🌅 Belvedere Murgia Timone — Sassi ao entardecer ⭐⭐"},{t:"20:00",a:"Jantar — Trattoria del Caveoso"},{t:"Noite",a:"Matera iluminada — caminhar pelos Sassi ✨"}],food:["Almoço rápido na estrada (Caserta→Matera)","Cozinha lucana nos Sassi (jantar)"],notes:"🚂 NOVO FORMATO: em vez de dirigir desde Roma, trem cedo Roma→Caserta (~1h40), visita à Reggia de manhã (malas no guarda-volumes GRÁTIS da entrada, 8h30-19h), retira o Carro 3 na Budget da própria estação de Caserta ~12h e segue pra Matera (~3h). Corta o trecho Nápoles inteiro e enxuga o volante. ⏰ CRÍTICO: o balcão da Budget fecha 13h pro almoço (reabre 14h/15h) — então entrar na Reggia logo na abertura (~9h) e pegar o carro até ~12h30; se a visita atrasar, cortar os jardins, não perder a janela. O horário da manhã diverge entre fontes (08:30 no site Budget / 09:00 no Booking), mas o fecho das 13h é consenso — vale ligar +39 0823 443756 confirmando o dia 14. Saída de Caserta rumo à A1/A16: cidade pequena, seguir placas, evitar a ZTL do centrinho. ★ Le Dimore Dell' Idris em caverna real no Sasso Caveoso (~500m do centro), 9.3/10 Booking — chegada de dia (~15h30) facilita descer as malas pelas escadas dos sassi.",cash:"Levar algum em espécie"},
+{date:"15/set",dow:"Ter",lug:{lv:"transfer",t:"Subir as malas do sasso pro carro; no porta-malas nos passeios. Ostuni centro storico pode pedir caminhada com as malas."},city:"Matera → Ostuni",emoji:"🤍",color:"#8B6914",overnight:"📍 Hotel La Terra, Ostuni",schedule:[{t:"06:30",a:"🌅 Matera manhã cedo — Sassi com luz dourada ⭐"},{t:"08:30",a:"Café da manhã no Le Dimore Dell' Idris"},{t:"09:30",a:"Saída → Alberobello (~1h15). Rione Monti UNESCO 🏠"},{t:"12:30",a:"Locorotondo (~15min) — vilarejo branco, Valle d'Itria"},{t:"13:30",a:"Almoço em Locorotondo"},{t:"15:00",a:"Saída → Ostuni (~30min). Check-in Hotel La Terra (centro histórico)."},{t:"17:30",a:"Piazza della Libertà, Cattedrale, vielas brancas"},{t:"19:30",a:"Jantar — Osteria Piazzetta Cattedrale"},{t:"~21:00",a:"Caminhada noturna pela cidade branca iluminada ⭐"}],food:["Orecchiette alle cime di rapa","Burrata fresca (max 24h!)"],notes:"★ Hotel La Terra fica no centro histórico (cidade branca), perfeito pra caminhar à noite pela Ostuni iluminada. Matera ao amanhecer = melhor horário.",cash:"Levar algum em espécie"},
+{date:"16/set",dow:"Qua",lug:{lv:"transfer",t:"No porta-malas o dia todo (Aula Simona com o carro parado). Trullo rural, acesso de carro tranquilo."},city:"Aula Simona + Trullo",emoji:"👩‍🍳🏠",color:"#8B6914",overnight:"📍 Borgo Trulli 1789, Cisternino",schedule:[{t:"08:30",a:"Saída → Ceglie Messapica (~15min). Café local antes da aula."},{t:"10:00",a:"👩‍🍳 Puglia Cooking Class 'Le orecchiette, che pasta!' — Simona Ciccarese ✅ RESERVADO ⭐⭐"},{t:"~14:30",a:"Fim da aula (almoço de 3 pratos + vinho incluso). Saída → Cisternino (~17min)"},{t:"15:00",a:"🥩 Cisternino — bombette nas putee (lanche leve). Aperitivo. ~1h."},{t:"16:00",a:"🚗 Saída → Borgo Trulli 1789 (~10min)"},{t:"~16:15",a:"Check-in trullo com Antonella — tour da masseria principal 🏠"},{t:"~17:00",a:"📷 Relaxar no Valle d'Itria — caminhar pelos olivais, varanda do trullo"},{t:"~18:30",a:"🌅 Pôr do sol no campo do trullo (ou drink em Locorotondo, 15min)"},{t:"20:00",a:"Jantar com Antonella (reservar antes!) ou em Cisternino (10min)"}],food:["Orecchiette com molho de tomate (feita por você!)","Bombette de Cisternino","Vinho Negramaro/Primitivo (incluído na aula)"],notes:"★ Dia mais especial da Puglia + descanso no trullo histórico. ★ Aula Simona ✅ RESERVADA via Viator — 4-5h imersiva, almoço completo incluso, no Trullo da Simona em Ceglie Messapica. ⚠️ Borgo Trulli 1789: WiFi limitado (só na casa principal), sem 5G — desconectar de verdade. Avisar Antonella o horário de chegada (15h-19h check-in). Jantar com Antonella precisa ser reservado antes.",cash:"Levar algum em espécie"},
+{date:"17/set",dow:"Qui",lug:{lv:"transfer",t:"No porta-malas em Polignano/Monopoli. Hotel em Lecce com estacionamento (10min do centro)."},city:"Polignano → Monopoli → Lecce",emoji:"🌊☀️",color:"#8B6914",overnight:"📍 Hotel Delle Palme, Lecce (2 noites)",schedule:[{t:"08:30",a:"☕ Café da manhã com Antonella no jardim do trullo"},{t:"09:30",a:"🚗 Trullo → Polignano a Mare (~45min)"},{t:"~10:15",a:"📷 🌊 Polignano a Mare — falésias, Cala Porta Vecchia, centro histórico (~2h) ⭐"},{t:"12:30",a:"🐟 Almoço em Polignano — peixe fresco do Adriático"},{t:"14:00",a:"🚗 Polignano → Monopoli (~15min)"},{t:"14:15",a:"⚓ Monopoli — porto pesqueiro, Castello Carlo V (~1h30)"},{t:"16:00",a:"🚗 Monopoli → Lecce pela SS16 (~1h15)"},{t:"~17:15",a:"Check-in Hotel Delle Palme (10min a pé do centro histórico)"},{t:"17:45",a:"⛪ Basílica di Santa Croce — fachada barroca impressionante"},{t:"18:30",a:"Piazza del Duomo + Anfiteatro Romano"},{t:"19:30",a:"☕ Caffè Leccese — café com latte di mandorla. OBRIGATÓRIO!"},{t:"20:30",a:"Jantar — Alle Due Corti (cozinha salentina)"}],food:["Peixe fresco em Polignano","Caffè Leccese ★OBRIGATÓRIO","Orecchiette","Ciceri e tria"],notes:"★ Rota linear norte→sul: trullo → Polignano → Monopoli → Lecce, sem voltas. ⚠️ Centros históricos Lecce/Monopoli: ZTL local. Estacionar FORA dos muros.",cash:"Levar algum em espécie"},
+{date:"18/set",dow:"Sex",city:"Lecce + Otranto",emoji:"🏖️",color:"#8B6914",overnight:"📍 Hotel Delle Palme, Lecce",schedule:[{t:"08:00",a:"🥐 Pasticciotto — Confetteria Natale ou Alvino. OBRIGATÓRIO!"},{t:"09:00",a:"Lecce — Museo Faggiano, Castello Carlo V, compras"},{t:"11:00",a:"Saída → Otranto (~45min)"},{t:"11:45",a:"⛪ DIRETO à Cattedrale — mosaico medieval único ⚠️ fecha 12:30–15:00, sem desvios na chegada"},{t:"12:35",a:"Castello Aragonese + vielas + porto (~1h20)"},{t:"14:00",a:"Almoço Otranto — polvo grelhado no porto 🐙"},{t:"16:00",a:"🏖️ Praia Baia dei Turchi (~15min — água cristalina)"},{t:"19:00",a:"Retorno a Lecce"},{t:"20:30",a:"Jantar — LaltroBaffo — carbonara di ricci di mare ⭐⭐"}],food:["Pasticciotto ★OBRIGATÓRIO","Polvo grelhado","Ricci di mare","Carbonara di ricci"],notes:"Baia dei Turchi: praia mais bonita do Salento. Levar toalha e água. ⚠️ Cattedrale fecha na pausa do meio-dia (12:30–15:00) — por isso o mosaico é a PRIMEIRA parada na chegada.",cash:"Levar algum em espécie"},
+{date:"19/set",dow:"Sáb",lug:{lv:"manage",t:"✅ Prioridade + 2 Malas de Cabine compradas (os dois): cada um leva mochila (embaixo do banco, ≤40×30×20cm) + mala de mão (bagageiro, ≤55×40×20cm e ≤10kg) NA CABINE — sem despacho. ⚠️ Ryanair pesa/mede no portão (excesso €11/kg) — pesar a mala em casa. 🍷 Vinho NÃO passa na cabine (líquido) — beber na viagem, comprar mala despachada neste voo, ou no duty-free de MXP no dia 20. Devolve o Carro 3 em Brindisi · chegada MXP 23:45 → táxi/shuttle Villa Malpensa."},city:"Gallipoli → Milão (MXP)",emoji:"✈️",color:"#333",overnight:"Hotel perto MXP (ex.: Villa Malpensa, First Hotel Malpensa) — a reservar",schedule:[{t:"08:30",a:"Saída Lecce → Gallipoli (~35min)"},{t:"09:00",a:"Gallipoli — centro histórico na ilha, Cattedrale, porto. ~2h."},{t:"11:00",a:"🏖️ Praia della Purità (se tempo permitir)"},{t:"12:30",a:"🍽️ Trattoria La Puritate — frutos do mar. Última refeição especial! 🐟"},{t:"~14:30",a:"Tarde livre em Gallipoli / praia — sem pressa (devolução do carro ficou folgada, ver Carros)"},{t:"~17:30",a:"🚗 Saída → Brindisi BDS (~1h45) · 🔑 devolução do Carro 3 marcada ~19:30-20h (desk até 23h; sem custo extra por ser a mesma diária)"},{t:"~19:15",a:"Chegada BDS — devolver carro + segurança (check-in online feito na véspera; Prioridade + 2 malas de cabine = nada a despachar)"},{t:"22:00",a:"✈️ Voo Ryanair FR3415 BDS → MXP ✅ PAGO"},{t:"23:45",a:"Pouso MXP — shuttle hotel (~5-15min) ✅ Sem correria pelo último trem"},{t:"~00:30",a:"Chegada hotel perto MXP — dormir tranquilo 😴"}],food:["Frutos do mar La Puritate","Primitivo di Manduria (último copo)"],notes:"★ Hotel perto MXP escolhido pra evitar stress do Ryanair (pouso 23:45 vs último Malpensa Express 00:24 = só 39min de margem se hospedasse central). Shuttle do hotel pega vocês mesmo tarde da noite. Dormir descansado pro voo das 15:15 do dia 20. ✈️ Check-in online Ryanair na noite de 18/set (abre 24h antes; balcão é cobrado).",cash:"Levar algum em espécie"},
+{date:"20/set",dow:"Dom",lug:{lv:"manage",t:"Se for à Brera de manhã, guardar as malas no KiPoint da Centrale (ou no MXP) antes do voo 15:15. Se descansar perto do aeroporto, tranquilo."},city:"MXP → Brasil",emoji:"🖼️🇧🇷",color:"#2E4057",overnight:"—",schedule:[{t:"07:30",a:"Café da manhã no hotel (shuttle hotels MXP servem desde 5h)"},{t:"08:00",a:"📌 DECIDIR: relax no hotel OU bate-volta ao centro de Milão"},{t:"~08:30",a:"OPÇÃO A — Centro: shuttle → MXP 8:35 → Malpensa Express 9:00 → Cadorna 9:37"},{t:"~10:00",a:"OPÇÃO A — Pinacoteca di Brera (abre 8:30, dom funciona) ⭐ O Beijo de Hayez (~1h30)"},{t:"~11:30",a:"OPÇÃO A — Café + último cornetto no bairro de Brera"},{t:"~12:00",a:"OPÇÃO A — Volta: Cadorna → MXP (~50min). OPÇÃO B — shuttle hotel → MXP às 12:00"},{t:"~12:50",a:"Chegada MXP — check-in Turkish Airlines T1, despachar malas (~2h25 margem)"},{t:"15:15",a:"✈️ TK1896 MXP → IST (3h) ✅ PAGO"},{t:"20:15",a:"TK215 IST → GRU (13h15)"},{t:"03:30 (+1)",a:"Chegada em Guarulhos — Seg 21/set 🇧🇷"}],food:["Último espresso italiano (em pé no balcão!)","Cornetto alla crema"],notes:"★ DECISÃO FLEXÍVEL: dormir descansado vs aproveitar Milão centro de manhã. Pinacoteca abre 8:30 (terça-domingo, fechada segunda) — folga maior do que parecia, dá pra fazer com calma. Opção B (ficar no hotel) é totalmente válida — vocês já viram Milão na chegada dia 29-30/ago.",cash:"Levar algum em espécie"}
+];
+
+const RES=[
+// ━━ JÁ PAGOS ━━
+{n:"A Última Ceia",c:"Milão",u:"done",d:"30/08 17h",nt:"✅ PAGO · Santa Maria delle Grazie"},
+{n:"Voo Ryanair BDS → MXP (FR3415)",c:"Brindisi",u:"done",d:"19/09 22:00→23:45",nt:"✅ PAGO · Reserva confirmada · Prioridade + 2 malas cabine"},
+{n:"Carro 1 — AVIS Sondrio → Verona Aeroporto",c:"Sondrio",u:"done",d:"31/ago–05/set",nt:"✅ PAGO · Fiat 500 ou similar · Genius 15% + Booking 10% acomodação · cancelamento grátis até 29/ago 18:30. ⚠️ Cobrança real estimada (spread + IOF cartão BR)"},
+// ━━ HOSPEDAGENS CONFIRMADAS (ordem cronológica) ━━
+{n:"Milan Brera City Center",c:"Milão",u:"confirmed",d:"29/ago",nt:"Reservado · 1 noite (cancelamento grátis, pagar no local)"},
+{n:"Design Suite Tirano",c:"Tirano",u:"confirmed",d:"30/ago",nt:"Reservado · 1 noite (cancelamento grátis, pagar no local)"},
+{n:"Cristallo B&B (Castelrotto)",c:"Dolomitas",u:"confirmed",d:"31/ago–04/set",nt:"Reservado · 4 noites (cancelamento grátis, pagar no local)"},
+{n:"Village Bazzanega — Montagnoli Group",c:"Tremosine sul Garda",u:"confirmed",d:"04/set",nt:"Reservado · 1 noite (cancelamento grátis, pagar no local)"},
+{n:"B&B Hotel Venezia Laguna",c:"Tronchetto, Veneza",u:"confirmed",d:"05–07/set",nt:"Reservado · 2 noites (cancelamento grátis, pagar no local)"},
+{n:"Plus Florence",c:"Florença",u:"confirmed",d:"07/set",nt:"Reservado · 1 noite · Via Santa Caterina d'Alessandria 15 (cancelamento grátis, pagar no local)"},
+{n:"L'Ultimo Mulino Country Hotel",c:"Gaiole in Chianti",u:"confirmed",d:"08/set",nt:"Reservado · 1 noite · moinho de 1400 restaurado, piscina (cancelamento grátis, pagar no local)"},
+{n:"Vatican Town",c:"Prati, Roma",u:"confirmed",d:"09–14/set",nt:"Reservado · 5 noites · 500m da Praça São Pedro · café da manhã incluído (cancelamento grátis, pagar no local)"},
+{n:"Le Dimore Dell' Idris",c:"Matera (Sasso Caveoso)",u:"confirmed",d:"14/set",nt:"Reservado · 1 noite · caverna real, 500m do centro (cancelamento grátis, pagar no local)"},
+{n:"Hotel La Terra",c:"Ostuni (centro histórico)",u:"confirmed",d:"15/set",nt:"Reservado · 1 noite · centro histórico cidade branca (cancelamento grátis, pagar no local)"},
+{n:"Borgo Trulli 1789",c:"Cisternino",u:"confirmed",d:"16/set",nt:"Reservado · 1 noite · trullo histórico de 1789, hospedeira Antonella · 17% off Genius (cancelamento grátis)"},
+// ━━ RESERVAR JÁ ━━
+{n:"Carro 2 (Florença → Orvieto) — ✅ RESERVADO",c:"Florença→Orvieto",u:"done",d:"08–09/set",nt:"✅ Reservado · Hertz · Opel Corsa manual · retirada Via Luigi Alamanni 35e (8/set 12h) → devolução Via Sette Martiri 32/F, Orvieto Scalo (9/set 18h). Falta só o BALCÃO: cobertura zero-franquia + vidros/pneus (franquias pré-pagas Danos €1.600/Roubo €2.000, caução €700); cartão físico c/ chip + senha; CNH+passaporte+voucher impresso + bilhete do Italo. Encher tanque antes de Orvieto. Depois: trem Orvieto→Roma regional ~€10/pp, na hora."},
+{n:"Carro 3 (Caserta → Brindisi BDS)",c:"Caserta",u:"now",d:"14–19/set",nt:"🔴 A reservar ~25/ago. NOVO: retirar na Budget da Estação de Caserta (Piazza Garibaldi 2/5) ~12h dia 14 — chegam de trem, visitam a Reggia, seguem pra Matera (corta Nápoles). Referência Budget: base (Hyundai i10, one-way ZERO) — mais barato que AVIS Roma. ⏰ Balcão fecha 13h pro almoço → pegar na janela da manhã (confirmar +39 0823 443756). Devolução Brindisi ~19:30-20h. Balcão: zero-franquia + vidros/pneus."},
+{n:"Hotel Delle Palme",c:"Lecce",u:"confirmed",d:"17–18/set",nt:"Reservado · 2 noites · 4 estrelas, café da manhã incluído, estacionamento próprio · 10min a pé do centro histórico (cancelamento grátis, pagar no local)"},
+{n:"Hotel perto MXP (última noite)",c:"Próximo Aeroporto Malpensa",u:"now",d:"19–20/set",nt:"Villa Malpensa (800m T1), First Hotel Malpensa (1km, soundproof) ou Crowne Plaza (entre T1-T2). Shuttle 24h. Pousa Ryanair 23:45 — dormir tranquilo perto."},
+{n:"Officina della Bistecca (Cecchini)",c:"Panzano in Chianti",u:"confirmed",d:"08/set 19h aperitivo + 20h jantar",nt:"✅ CONFIRMADO ter 08/09/2026 · 2 pessoas · €100 a pagar local (€50/pessoa) · alergia abacaxi anotada · ⚠️ RECONFIRMAR 06 ou 07/set via WhatsApp +39 331 586 9063 ou e-mail macelleria@dariocecchini.com — sem isso reserva pode ser cancelada · Via XX Luglio 11, Panzano"},
+{n:"Osteria Brunello",c:"Milão (Brera)",u:"confirmed",d:"29/ago 21:15",nt:"✅ CONFIRMADO sáb 29/08/2026 · 21:15 · 2 pessoas · pagar local · Corso Garibaldi 117 · Reserva direta WhatsApp +39 338 6175118 (TheFork só liberava até 17/08) · cortesia: reconfirmar WhatsApp 28/ago"},
+{n:"❌ Borgo Machiavelli — REMOVIDO",c:"Sant'Andrea in Percussina",u:"now",d:"—",nt:"Provavelmente fechado (Google 'temporariamente fechado' + relato recente de visitante; site/telefone fora do ar). Substituído por almoço leve na Enoteca Falorni, Greve (sem reserva)"},
+{n:"Galeria Borghese",c:"Roma",u:"weeks",d:"13/set TARDE (13h ou 15h)",nt:"⚠️ RESERVAR SLOT DE TARDE (13h/15h) — NÃO 11h: a Corri Bravetta é de manhã. Janela deslizante. Checkpoints: ✅ 06/jul (set. ainda fechado — ia só até 30/ago), ~20–27/jul (set. deve abrir → reservar já), 02/ago (crítico). Site oficial tosc.it (conta criada ✅) · como é domingo, reservar assim que abrir · mostra Metamorfosi até 20/set · PRIORIZAR 15h (13h conflita com o almoço pós-corrida)"},
+{n:"Aula Simona Ciccarese (Viator)",c:"Ceglie Messapica",u:"confirmed",d:"16/09 10h",nt:"Reservado · cobrança automática em 14/09/26 · 'Le orecchiette, che pasta!' no Trullo · almoço 3 pratos + vinho incluso · ~4-5h"},
+// ━━ 4-6 SEMANAS (com datas D específicas) ━━
+{n:"Colósseo + Foro + Palatino (Full Experience Arena+Attico)",c:"Roma",u:"month",d:"10/set 8:30",nt:"🚨 RESERVAR ter 11/08/2026 às 04:00 BRT (janela 30 dias) · ticketing.colosseo.it · Full Experience Arena+Attico · bilhete NOMINAL (levar passaporte) · ⚠️ bots saqueiam em minutos, ser RÁPIDO · backup: Arena solo → Ordinario"},
+{n:"Museus Vaticano + Sistina ✅ COMPRADO",c:"Roma",u:"done",d:"11/set 08:00",nt:"✅ Reservado + pago · reservado (€25/pessoa) · Admission Ticket (Museus + Sistina) · ⚠️ dress code rigoroso (ombros+joelhos cobertos), mochilas grandes proibidas · levar passaporte · áudio: app Rick Steves grátis"},
+{n:"Cappella Sansevero ✅ RESERVADO",c:"Nápoles",u:"done",d:"12/set 16:00",nt:"✅ Reserva confirmada (13/07) (2 inteiras €12 + audioguia par €6) · slot 16:00. E-ticket no email — mostrar direto na entrada, fila dedicada, válido até 16:10. ⚠️ sem fotos/celular dentro; audioguia em inglês."},
+{n:"Cúpula de Brunelleschi ✅ COMPRADO",c:"Florença",u:"done",d:"07/set 14:15 (em ponto!)",nt:"✅ Brunelleschi Pass (2x) · reservado · válido 3 dias (07–09/set) p/ Cúpula+Campanile+Battistero+Museu+Santa Reparata · ⚠️ Cúpula 14:15 IMPRORROGÁVEL, conferem nome+passaporte · entrada Porta della Mandorla · 463 degraus · mochilas proibidas (guarda-volumes Piazza Duomo 38/r) · Battistério em restauro (mosaicos não visíveis)"},
+{n:"Uffizi ✅ COMPRADO",c:"Florença",u:"done",d:"08/set 10:00",nt:"✅ Uffizi Intero (2x) · reservado · slot 10:00 (com folga após Accademia 8:15) · bilhetes nominais Leonardo + Lisandra · ~2h ritmo destaques · guardar QR de cada um"},
+{n:"Accademia (Davi) ✅ COMPRADO",c:"Florença",u:"done",d:"08/set 08:15–08:30",nt:"✅ Pass 48h Accademia+Bargello (2x) · reservado · entrada Accademia 8:15–8:30 (chegar 8:05) · Bargello livre nas 48h seguintes (opcional) · guardar QR de cada um"},
+{n:"Bikes Ciclovia Drava",c:"Dobbiaco",u:"month",d:"04/set",nt:"Sportler ou Intersport — bikes tradicionais · ⚠️ confirmar se pacote inclui trem de volta Lienz→Dobbiaco com bike (carro fica em Dobbiaco, NÃO entra na Áustria)"},
+// ━━ 2-3 SEMANAS ━━
+{n:"Bikes em Limone (passerella)",c:"Limone sul Garda",u:"weeks",d:"05/set",nt:"Aluguel local no centro de Limone — 1h"},
+{n:"Museus Capitolinos",c:"Roma",u:"weeks",d:"10/set 14:30",nt:"museiincomuneroma.it · ~ · Loba Capitolina + Marco Aurélio"},
+{n:"Pantheon (€5)",c:"Roma",u:"weeks",d:"11/set 16:30",nt:"museiitaliani.it (oficial — NÃO Tiqets que cobra 2-3× mais)"},
+{n:"Pompeia",c:"Pompei",u:"weeks",d:"12/set",nt:"pompeiisites.org · €22/pessoa = · janela ~45 dias antes · audioguia recomendada"},
+{n:"Pinacoteca di Brera",c:"Milão",u:"weeks",d:"20/set manhã",nt:"~€15 · O Beijo de Hayez · Abre 8:30 ter-dom (fechada seg), última entrada 18h. Domingo 20/set funciona normalmente."},
+{n:"Ristorante Paoli",c:"Florença",u:"weeks",d:"07/set",nt:"email/telefone — pedir peposo (não bistecca)"},
+{n:"🔶 Jantar Veneza — Al Covo OU Vini da Gigio (decidir c/ Lisandra)",c:"Veneza",u:"weeks",d:"06/set 20:00",nt:"❌ Testiere fecha dom/seg. Abertos no domingo: Al Covo (Castello 3968 · fecha ter/qua · cozinha 19:30–22h · reserva pelo site ristorantealcovo.com · ~€70-90/pp · mín. 2 pratos/pessoa, sem shorts/chinelo à noite) × Vini da Gigio (Cannaregio 3628/A · fecha seg/ter · dom 19–22:30 · +39 041 528 5140 / info@vinidagigio.com · ~€50-60/pp) · decidir e reservar ~início de agosto"},
+{n:"Roscioli",c:"Roma",u:"weeks",d:"11/set jantar",nt:"Campo de' Fiori · cacio e pepe lendária"},
+{n:"Da Enzo al 29 (SEM reserva — fila cedo)",c:"Roma (Trastevere)",u:"weeks",d:"10/set 18:15 fila → 18:30 jantar",nt:"NÃO aceita reservas (perfil oficial) · 12–15h / 18:30–22:30 · fecha DOMINGO · fila forma antes da abertura — chegar 18:15 · aceita cartão · jantar cedo libera Trastevere à noite"},
+{n:"Flavio al Velavevodetto",c:"Roma (Testaccio)",u:"weeks",d:"10/set almoço",nt:"Testaccio · carbonara/cacio e pepe"},
+{n:"Osteria dell'Angelo",c:"Roma (Prati)",u:"weeks",d:"11/set almoço",nt:"Prati, perto Vatican Town · menu fixo, clientela 100% local · ⚠️ confirmar se serve ALMOÇO na sexta (almoço só em dias específicos)"},
+{n:"La Tavernetta 29 (sem reserva — chegada estratégica)",c:"Roma (Trastevere)",u:"weeks",d:"13/set 19:45",nt:"⚠️ NÃO aceita reservas — chegada estratégica 19:45 (turno da noite abre 19:00; antes do pico 20:30-21:00). Via della Pelliccia 29a · carbonara lendária 4.9★ Restaurant Guru · pagamento AMEX/Visa/MC/cash · abre DOMINGO (fecha seg) ✅ · Plan B se fila absurda: Tonnarello (aberto todos os dias, 3min a pé — Da Enzo fecha dom)"},
+// ━━ TRENS ━━
+{n:"🚄 Italo Veneza → Florença ✅ COMPRADO",c:"Italo",u:"done",d:"07/set 08:05→10:20",nt:"Italo 8905 · reservado · coche 6, assentos 11 (Lisandra) e 12 (Leonardo) · Smart/Economy · comprado 28/jun via PayPal · 💡 Italo saiu menos da metade da Frecciarossa (€26,90 vs €55,80/pessoa)"},
+{n:"🚄 Roma → Nápoles (alta velocidade)",c:"Trenitalia ou Italo",u:"month",d:"12/set 07:35",nt:"📅 COMPRAR ~01/ago (6 sem antes) · 💡 comparar Italo (italotreno.it) × Trenitalia — Italo saiu bem mais barato no trecho Veneza→Florença, vale checar aqui também · tarifa econômica ~ · ⚠️ tarifa barata não permite cancelar/alterar"},
+{n:"🚄 Nápoles → Roma (flexível)",c:"Trenitalia ou Italo",u:"month",d:"12/set 20:00",nt:"📅 COMPRAR ~01/ago (6 sem antes) · 💡 comparar Italo × Trenitalia · pegar tarifa flexível (~€60-70 casal, permite alterar) caso o dia de Nápoles atrase · IMPORTANTE: pegar golden hour Lungomare (pôr do sol Vesúvio ~19:15)"},
+{n:"🚂 Trenord regional Milano → Tirano",c:"Trenord",u:"weeks",d:"30/ago 20:20",nt:"Preço FIXO regional ~€13/pessoa (~) — sem tarifa promocional; comprar no app Trenord quando quiser (até na hora) · chegada ~22:50 · ⚠️ confirmar horário exato (padrão: saídas :20, última 21:20) e avisar o hotel"},
+{n:"🚂 Regionale Veloce Verona → Venezia",c:"Trenitalia",u:"weeks",d:"05/set 19:30",nt:"📅 COMPRAR 2-3 dias antes · trenitalia.com · Preço fixo €11/pessoa = · sem reserva de assento (pega qualquer trem) · sai a cada 30-60min Verona Porta Nuova → Venezia Santa Lucia"},
+{n:"🎫 Trenino Rosso (bilhete regional online)",c:"RhB · Tirano-St.Moritz",u:"weeks",d:"31/ago",nt:"📅 COMPRAR 2-3 sem antes · rhb.ch ou trainline.com · 2ª classe round trip ~CHF 65-75/pessoa = ~ · vale o dia inteiro, sem reserva de assento · janela de venda abre 60 dias antes"},
+{n:"🎫 Trens locais — compra na hora",c:"Vários",u:"weeks",d:"vários",nt:"NÃO precisam ser comprados antes: Malpensa Express MXP→Cadorna 29/ago (€13/pessoa máquina aeroporto), Tirano→Sondrio 31/ago volta (~€5), Circumvesuviana Napoli↔Pompei 12/set (€2,80 cada perna · ⚠️ pickpockets, mochila na frente). Total: ~"},
+// ━━ NOVOS v9 ━━
+{n:"🅿️ Ticket Braies — OPCIONAL (dispensável se chegar cedo)",c:"Braies",u:"weeks",d:"03/set ~8h",nt:"PLANO: chegar antes das 9h = acesso livre, SEM reserva e SEM os €44. Mirar ~8h no lago (loteia ~8h em alta estação); paga só estacionamento normal (~€6-8). Só comprar o combinado €44 (prags.bz) se quiser garantir vaga em horário certo — inclui €22 de voucher nos restaurantes do lago; nesse caso atualizar a placa do Carro 1 no dia 31."},
+{n:"🎨 Palazzo Ducale (Veneza)",c:"Veneza",u:"weeks",d:"06/set 09:30",nt:"Comprar online no site oficial (palazzoducale.visitmuve.it) — fura fila · bilhete inclui Museo Correr · ~€30/pessoa"},
+{n:"🐟 Trattoria La Puritate (Gallipoli)",c:"Gallipoli",u:"weeks",d:"19/set 12:30 almoço",nt:"Famosa e pequena — reservar por telefone · frutos do mar, última refeição especial da viagem"},
+{n:"🍷 Jantar com Antonella (trullo)",c:"Cisternino",u:"weeks",d:"16/set 20:00",nt:"Reservar direto com a Antonella ao avisar o horário de chegada (check-in 15h–19h)"},
+];
+
+const BUD=[];
+
+const CARS=[];
+
+const URG={done:{l:"Pago",bg:"#D4EDDA",c:"#155724",dot:"#28A745"},confirmed:{l:"Confirmado (pagar no local)",bg:"#D1ECF1",c:"#0C5460",dot:"#17A2B8"},now:{l:"Reservar JÁ",bg:"#F8D7DA",c:"#721C24",dot:"#DC3545"},month:{l:"4–6 semanas",bg:"#FFF3CD",c:"#856404",dot:"#FFC107"},weeks:{l:"2–3 semanas",bg:"#D1ECF1",c:"#0C5460",dot:"#17A2B8"}};
+const STAT_C={paid:"#28A745",buy:"#DC3545",book:"#FFC107",spend:"#6C757D",fx:"#1F6FEB"};
+
+const FOOD=[
+{region:"🏙️ Milão / Lombardia",days:"Dias 29-30/ago + 19-20/set",color:"#2E4057",items:[
+{name:"Cotoletta alla Milanese",price:"€25-40",note:"Vitela empanada espessa com osso, frita na manteiga clarificada. Escola tradicional milanesa. ⭐ Osteria Brunello (já reservado)."},
+{name:"Risotto alla Milanese",price:"€15-25",note:"Risoto açafrão dourado clássico, base da cozinha milanesa. Acompanha bem ossobuco."},
+{name:"Ossobuco alla Milanese",price:"€20-30",note:"Ossobuco de vitela braseado com legumes e gremolata (raspas de limão + alho + salsinha)."},
+{name:"Mondeghili",price:"€8-15",note:"Almôndegas milanesas (sobras de carne + pão + queijo), receita popular medieval."},
+{name:"Aperitivo (Negroni / Spritz / Campari)",price:"€8-15",note:"Tradição milanesa absoluta — entre 18-20h, sempre com stuzzichini gratuitos."}
+]},
+{region:"🚂 Valtellina / Tirano + St. Moritz",days:"Dias 30-31/ago",color:"#1B4332",items:[
+{name:"Pizzoccheri della Valtellina",price:"€15-20",note:"⭐ ICONICO. Pasta curta de trigo sarraceno com batata, repolho savoy, queijo Casera e manteiga. OBRIGATÓRIO em Tirano."},
+{name:"Bresaola della Valtellina IGP",price:"€12-18",note:"Carne curada finíssima, defumada, servida com rúcula, parmesão, limão e azeite."},
+{name:"Sciatt",price:"€8-12",note:"Bolinhos crocantes de farinha de trigo sarraceno com queijo Casera derretido por dentro."},
+{name:"Polenta taragna",price:"€12-18",note:"Polenta misturada com queijo derretido. Pesada e excelente em dia frio."}
+]},
+{region:"🏔️ Dolomitas / Sul-Tirol",days:"Dias 01-04/set",color:"#1B4332",items:[
+{name:"Canederli",price:"€10-15",note:"Bolinhos grandes de pão duro + speck + queijo, servidos em caldo ou manteiga."},
+{name:"Speck IGP (tagliere)",price:"€12-18",note:"Presunto defumado tirolês, fatiado fino, servido com pão de centeio e pickles."},
+{name:"Schlutzkrapfen",price:"€12-18",note:"Ravióli tirolês meia-lua, recheado com espinafre + ricota, manteiga derretida e ervas."},
+{name:"Goulash con polenta",price:"€15-22",note:"Ensopado húngaro-tirolês de carne com páprica, servido sobre polenta cremosa."},
+{name:"Krapfen",price:"€3-5",note:"Donut fritado austríaco recheado de geleia/creme. Café da manhã clássico nos rifugios."},
+{name:"Strudel di mele",price:"€5-8",note:"Strudel de maçã com canela, passas, nozes. OBRIGATÓRIO nos rifugios das Dolomitas."}
+]},
+{region:"🌊 Lago di Garda",days:"Dias 04-05/set",color:"#0A3D62",items:[
+{name:"Lavarello / Persico (peixe do lago)",price:"€18-25",note:"Peixes brancos do lago, grelhados ou empanados, servidos com legumes."},
+{name:"Risotto al pesce di lago",price:"€15-22",note:"Risoto cremoso com filés de peixe do Garda + ervas frescas."},
+{name:"Olive del Garda DOP",price:"€5-10 antipasto",note:"Azeitonas e azeite DOP do Garda — região tem microclima quase mediterrâneo."},
+{name:"Vinho Lugana DOC",price:"€20-35/garrafa",note:"Vinho branco da margem sul do Garda (uva Trebbiano). Combina perfeitamente com peixe."}
+]},
+{region:"🚣 Veneza / Vêneto",days:"Dias 05-07/set",color:"#0A3D62",items:[
+{name:"Cicchetti (vários)",price:"€1.50-4 cada",note:"Tapas venezianas nos bacari (botecos). Bacalhau, polenta com fígado, sardinhas, ovos. Comer em pé."},
+{name:"Sarde in saor",price:"€10-15",note:"Sardinhas marinadas agridoces com cebola, passas e pinhão. Receita medieval veneziana."},
+{name:"Baccalà mantecato",price:"€8-15",note:"Bacalhau cremoso batido em emulsão. Servido sobre torradinhas ou polenta."},
+{name:"Risotto al nero di seppia",price:"€18-28",note:"Risoto preto com lula e sua tinta. Iconico veneziano — não tenha medo da cor!"},
+{name:"Bigoli in salsa",price:"€12-20",note:"Pasta grossa típica veneziana com molho de cebola + anchovas."},
+{name:"Fritto misto di mare",price:"€20-30",note:"Frutos do mar empanados e fritos: lulinha, camarão, peixinhos."},
+{name:"Spritz veneziano",price:"€4-8",note:"Aperitivo NASCEU em Veneza. Aperol/Campari/Cynar + Prosecco + soda + azeitona."}
+]},
+{region:"🎨 Florença + Chianti / Toscana",days:"Dias 07-09/set",color:"#6B3A2A",items:[
+{name:"Bistecca alla Fiorentina (Chianina)",price:"€55-97/kg",note:"T-bone alto, ponto único (mal passada). ⭐ Cecchini Officina é a referência mundial (dia 08)."},
+{name:"Pici al ragù di Chianina",price:"€15-20",note:"Pasta grossa rústica feita à mão, com ragu da nobre Chianina (raça toscana)."},
+{name:"Pappardelle al cinghiale",price:"€15-20",note:"Pasta larga com ragu de javali — clássico toscano dos boscos."},
+{name:"Peposo all'Imprunetina",price:"€18-25",note:"Guisado medieval de boi cozido por horas em vinho tinto + MUITA pimenta. Receita dos construtores da Cúpula de Brunelleschi! ⭐ Paoli faz."},
+{name:"Ribollita",price:"€10-15",note:"Sopa toscana antiga: pão duro + feijão branco + couve + tomate. Vegetariana e icônica."},
+{name:"Pappa al pomodoro",price:"€10-15",note:"Sopa de pão + tomate. Simplicidade absoluta da cucina povera toscana."},
+{name:"Lampredotto (sanduíche)",price:"€5-8",note:"Sanduíche de bucho de boi cozido — street food florentino. Mercato Centrale ou trippai pela rua."},
+{name:"Crostini neri (fegatini)",price:"€8-12",note:"Torradinhas com patê de fígado de galinha toscano — antipasto clássico."},
+{name:"Pecorino di Pienza DOP",price:"€12-20",note:"Queijo de ovelha da Val d'Orcia. Acompanhar com mel ou geleia. Comprar fresco na Val d'Orcia."},
+{name:"Brunello di Montalcino",price:"€10-25/taça",note:"Um dos maiores vinhos da Itália. Sangiovese 100% de Montalcino, 5 anos mínimo de envelhecimento."},
+{name:"Cantucci + Vin Santo",price:"€8-12",note:"Biscoitos de amêndoa molhados no vinho doce de sobremesa. Finalização clássica toscana."}
+]},
+{region:"🏛️ Roma / Lazio",days:"Dias 09-14/set",color:"#4A1942",items:[
+{name:"Cacio e pepe",price:"€12-18",note:"Pasta com pecorino romano + pimenta preta. 3 ingredientes só. Receita ancestral dos pastores — fácil errar, difícil acertar."},
+{name:"Carbonara",price:"€14-20",note:"⚠️ NUNCA com creme! Pasta + guanciale + ovo + pecorino + pimenta. Roscioli faz uma das melhores."},
+{name:"Amatriciana",price:"€14-20",note:"Pasta com guanciale, tomate, pecorino. Originária de Amatrice. Bucatini é o formato clássico."},
+{name:"Gricia",price:"€12-18",note:"Avó da Amatriciana (sem tomate): guanciale + pecorino + pimenta. A mais antiga das 4."},
+{name:"Saltimbocca alla Romana",price:"€18-25",note:"Vitela com presunto crú e sálvia, salteada em manteiga e vinho branco. 'Salta na boca'."},
+{name:"Carciofi alla Giudia",price:"€8-12 cada",note:"Alcachofra inteira frita 2x. Receita do gueto judeu romano. Set/out pode ainda ter ocasionalmente."},
+{name:"Carciofi alla Romana",price:"€8-12 cada",note:"Alcachofra braseada com hortelã, alho, azeite — versão romana clássica."},
+{name:"Supplì al telefono",price:"€2-4 cada",note:"Bolinho de risoto recheado com mussarela. Ao abrir, o queijo derretido faz 'fio de telefone'."},
+{name:"Coda alla Vaccinara",price:"€18-25",note:"Rabada cozida lenta com aipo, tomate, vinho e UM TOQUE de chocolate amargo. Pesada e sublime."},
+{name:"Maritozzo con panna",price:"€4-7",note:"Brioche romano cortado e recheado com chantilly. Café da manhã ou lanche. Roscioli é lendário."},
+{name:"Gelato artesanal",price:"€3-5",note:"Procurar 'gelateria artigianale'. Cores naturais (pistachio acinzentado, não verde fluo)."}
+]},
+{region:"🍕 Nápoles / Campânia",days:"Dia 12/set (bate-volta)",color:"#4A1942",items:[
+{name:"Pizza Napoletana DOC (Margherita)",price:"€7-12",note:"Massa fininha, borda alta, forno a lenha 90s a 400°C. Da Michele, Sorbillo, Di Matteo. NÃO usar garfo/faca!"},
+{name:"Sfogliatella riccia",price:"€2-4",note:"Massa folhada em camadas com recheio de ricota + sêmola + frutas cristalizadas. Pintauro é o templo."},
+{name:"Babà al rum",price:"€3-6",note:"Bolinho fermentado embebido em xarope de rum. Cobertura de chantilly opcional."},
+{name:"Pasta alla Genovese",price:"€12-18",note:"Pasta com molho longo de cebola + carne — apesar do nome, é napolitana."},
+{name:"Friarielli",price:"€5-8 acompanhamento",note:"Brócolis-rabe refogado com alho e pimenta — vegetariano clássico."},
+{name:"Caffè napoletano",price:"€1.20-1.80",note:"Café mais forte e cremoso da Itália. ⚠️ NÃO pedir cappuccino depois das 11h — só turista."}
+]},
+{region:"🏰 Matera / Basilicata",days:"Dias 14-15/set",color:"#8B6914",items:[
+{name:"Pane di Matera IGP",price:"Acompanhamento (incluso)",note:"Pão alto de miolo amarelo, casca grossa, sabor singular. Formato 'a corno' (chifre)."},
+{name:"Crapiata",price:"€10-15",note:"Sopa de legumes e grãos antiquíssima, marca o fim de verão na Basilicata."},
+{name:"Peperoni cruschi",price:"€5-8 acompanhamento",note:"Pimentões secos crocantes fritos, característicos da Basilicata. Excelente em pastas."},
+{name:"Orecchiette con cime di rapa",price:"€10-15",note:"Pasta orecchiette com brócolis-rabe, alho, pimenta — compartilhada com Puglia."},
+{name:"Cavatelli al sugo di mollica",price:"€12-18",note:"Massa curta da Basilicata com molho à base de pão ralado tostado, alho, anchova."}
+]},
+{region:"🤍 Puglia",days:"Dias 15-19/set",color:"#8B6914",items:[
+{name:"Orecchiette alle cime di rapa",price:"€10-15",note:"⭐ PRATO ICONICO. Vocês vão APRENDER A FAZER com a Simona dia 16!"},
+{name:"Bombette di Cisternino",price:"€2-3 cada",note:"Rolinhos de carne de porco com queijo, grelhados nas 'putee' (açougues-restaurantes). Específico de Cisternino."},
+{name:"Burrata di Andria DOP fresca",price:"€8-15",note:"Versão pugliesa com creme dentro da casca de mozzarella. ⚠️ Máximo 24h depois de produzida pra ser top."},
+{name:"Focaccia barese",price:"€3-6 fatia",note:"Focaccia alta de batata com tomate cereja, orégano e azeitonas pretas. Excelente street food."},
+{name:"Tarallini",price:"€2-5 saco",note:"Biscoitinhos crocantes em formato de aliança, azeite e ervas (alecrim, pimenta, funcho)."},
+{name:"Pasticciotto leccese",price:"€2-3",note:"Massa amanteigada recheada de creme. Café da manhã clássico de Lecce — comer ainda quente."},
+{name:"Caffè leccese (latte di mandorla)",price:"€2-4",note:"⭐ ICONICO de Lecce — café gelado com leite de amêndoa caseiro. OBRIGATÓRIO!"},
+{name:"Ricci di mare (ouriço-do-mar)",price:"€20-35",note:"Especialidade salentina. Crú com pão tradicionalmente, ou Carbonara di Ricci no LaltroBaffo (dia 18)."},
+{name:"Frutti di mare crudi",price:"€18-30",note:"Crudités de polvo, lula, mariscos, camarões. Servido em Gallipoli e Otranto."},
+{name:"Pesce spada (espadarte)",price:"€18-25",note:"Espadarte fresco do Adriático, geralmente grelhado com limão e azeite."},
+{name:"Tiella barese",price:"€8-12",note:"Cazuela com arroz, batata e mexilhões — receita pugliesa única."}
+]},
+{region:"🇮🇹 Imperdíveis — em qualquer lugar",days:"Toda a viagem",color:"#666",items:[
+{name:"Espresso",price:"€1-2 balcão / €3-5 mesa",note:"⭐ TOMAR EM PÉ NO BALCÃO — preço bem menor e ritual italiano. NUNCA pedir 'large coffee' ou 'iced'."},
+{name:"Cappuccino",price:"€1.50-3 balcão",note:"⚠️ Italianos NÃO bebem depois das 11h. Pedir à tarde é selo instantâneo de turista."},
+{name:"Gelato artesanal",price:"€2-5",note:"Procurar 'gelateria artigianale'. Cores naturais (pistachio acinzentado, não verde fluo). Sem montículos grandes."},
+{name:"Tiramisu",price:"€5-8",note:"Original do Vêneto (Treviso). Mascarpone, savoiardi molhado em café, cacau. ⚠️ Cuidado com versões turísticas com chantilly."},
+{name:"Aperol Spritz",price:"€5-10",note:"Aperitivo italiano clássico. Sempre com stuzzichini (snacks) entre 18-20h."},
+{name:"Negroni",price:"€8-15",note:"Gin + Campari + Vermut tinto. Inventado em Florença em 1919 pelo Conde Negroni."},
+{name:"Bruschetta",price:"€4-10",note:"Pão tostado com azeite + sal + topping (tomate, fígado, etc). ⚠️ Italianos pronunciam 'brusKEta', não 'bruchEta'."},
+{name:"Caprese",price:"€10-18",note:"Mozzarella + tomate + manjericão + azeite. Inventado em Capri. Versões com mozzarella di bufala são superiores."},
+{name:"Prosecco",price:"€20-40/garrafa",note:"Espumante do Vêneto, leve e refrescante. Base do Spritz e do brinde italiano."},
+{name:"Limoncello",price:"€3-6 (chupinha)",note:"Licor de limão amalfitano. Servido pós-jantar GELADO como digestivo (geralmente cortesia da casa)."},
+{name:"Grappa",price:"€3-8 (chupinha)",note:"Destilado seco do bagaço da uva. Digestivo italiano tradicional após refeições pesadas."},
+{name:"Cannoli siciliani",price:"€3-5",note:"Massa frita tubular recheada com ricota doce + frutas/chocolate. Originário da Sicília, vende em toda Itália."}
+]}
+];
+
+const CHK=[];
+
+// ═══ STATE ══════════════════════════════════════════════════════════════
+let tab="today", dayIdx=0, foodOpen=false;
+// Persistência local — funciona no navegador / GitHub Pages (o preview do chat pode bloquear, mas não quebra)
+let checked={}, chkChecked={};
+try{ checked=JSON.parse(localStorage.getItem("viagem_res")||"{}"); }catch(e){ checked={}; }
+try{ chkChecked=JSON.parse(localStorage.getItem("viagem_chk")||"{}"); }catch(e){ chkChecked={}; }
+function persist(){ try{ localStorage.setItem("viagem_res",JSON.stringify(checked)); localStorage.setItem("viagem_chk",JSON.stringify(chkChecked)); }catch(e){} }
+
+function regionOf(i){if(i<=1)return"Milão";if(i==2)return"Trenino Rosso";if(i<=5)return"Dolomitas";if(i==6)return"Garda";if(i==7)return"Garda→Veneza";if(i==8)return"Veneza";if(i<=10)return"Florença";if(i<=15)return"Roma";if(i==16)return"Matera";if(i<=21)return"Puglia";return"Volta";}
+
+// ═══ RENDER ═════════════════════════════════════════════════════════════
+const RUN=[
+{k:"event",title:"🏆 Corri Bravetta — 10 km ✅ INSCRITOS",sub:"Dom 13/set · largada 9h00 · retirada 7h30–8h30",lines:["✅ 2 inscrições feitas (não-competitiva, via PayPal) · €18/pessoa =","📍 Largada Via dei Capasso, bairro Bravetta (oeste de Roma) · ~20–25min de táxi de Prati · percurso pela Villa Pamphili (fotos Foto4Go incluídas)","🎽 Retirada do número: DOMINGO 7h30–8h30 na Via dei Capasso (NÃO em Fiumicino!) — arranjo especial com a organização","👕 Camisetas: avisar os TAMANHOS por mensagem no Facebook no SÁBADO 12/set (retiram junto com os números no domingo)","⚠️ Por causa da corrida, a Galleria Borghese foi pra tarde — PRIORIZAR 15h (13h conflita com o almoço pós-corrida); reservar quando abrir (~02/08)"]},
+{k:"win",city:"🏔️ Dolomitas — Alpe di Siusi",sub:"01–03/set (3 noites em Castelrotto)",lines:["Corrida matinal pelos prados do maior planalto alpino da Europa, ao nascer do sol","⚠️ Altitude ~1.800m — correr mais leve que o ritmo de SP"]},
+{k:"win",city:"🚤 Veneza — Zattere",sub:"06/set de manhã",lines:["Orla das Fondamente delle Zattere (sul, vista da Giudecca) com a cidade vazia","Cheia de pontes (escadas) — mais corrida cênica que treino de ritmo"]},
+{k:"win",city:"🏛️ Roma — Villa Borghese / Lungotevere ⭐",sub:"09–14/set (5 noites em Prati) — melhor base da viagem",lines:["Villa Borghese: o grande parque + pista do Pincio (clássico dos corredores romanos)","Lungotevere: correr à beira do Tibre passando pelo Castel Sant'Angelo, São Pedro ao fundo","Com 5 manhãs dá pra encaixar 2 corridas tranquilas aqui (ex.: 10/set + a Corri Bravetta no 13/set)"]},
+{k:"win",city:"🏰 Lecce — centro barroco",sub:"17–18/set (2 noites)",lines:["Manhã cedo pelo centro barroco ainda vazio, ou uma corrida mais longa se quiserem"]},
+{k:"skip",title:"Dias pra poupar as pernas",lines:["Trenino Rosso (31/ago), transferências longas de carro (04, 05, 09, 14/set) e o dia do voo Ryanair (19/set) — logística pesada, melhor descansar"]}
+];
+
+function renderRuns(ct){
+ let h=`<div class="note" style="background:#E9F5EE;color:#1F6E43">🏃 Plano pra correr ~2x por semana: uma corrida-evento (Corri Bravetta) + janelas matinais nas cidades onde vocês ficam mais tempo. Distâncias até 10 km.</div>`;
+ RUN.forEach(r=>{
+ if(r.k==="event"){
+ h+=`<div style="background:var(--card);border:2px solid #C9A24B;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)"><div style="font-family:var(--playfair);font-size:20px;color:#7A5C12;margin-bottom:2px">${r.title}</div><div style="font-family:var(--lato);font-size:14px;color:var(--text2);margin-bottom:10px">${r.sub}</div>${r.lines.map(l=>`<div style="font-size:14.5px;line-height:1.5;color:#555;margin-bottom:7px">${l}</div>`).join("")}</div>`;
+ } else if(r.k==="win"){
+ h+=`<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:13px;box-shadow:0 1px 3px rgba(0,0,0,0.04)"><div style="font-family:var(--playfair);font-size:18px;color:var(--text);margin-bottom:2px">${r.city}</div><div style="font-family:var(--lato);font-size:13px;color:var(--text2);margin-bottom:9px">${r.sub}</div>${r.lines.map(l=>`<div style="font-size:14.5px;line-height:1.5;color:#555;margin-bottom:6px">${l}</div>`).join("")}</div>`;
+ } else {
+ h+=`<div style="background:#F4F2EF;border-radius:12px;padding:13px 16px;margin-bottom:13px"><div style="font-family:var(--lato);font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-weight:700;margin-bottom:6px">${r.title}</div>${r.lines.map(l=>`<div style="font-size:14px;line-height:1.5;color:#777">${l}</div>`).join("")}</div>`;
+ }
+ });
+ ct.innerHTML=h;
+}
+
+function render(){
+ const d=DAYS[dayIdx];
+ const hdr=document.getElementById("hdr");
+ const dn=document.getElementById("daynav");
+ const ct=document.getElementById("content");
+
+ // Header
+ hdr.style.background=`linear-gradient(135deg, ${d.color} 0%, ${d.color}DD 100%)`;
+ if(tab==="today"){
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-city">${d.emoji} ${d.city}</div><div class="hdr-date">${d.dow} ${d.date}/2026 — Dia ${dayIdx+1} de ${DAYS.length}</div>${d.overnight&&d.overnight!=="—"?`<div class="hdr-hotel">🛏️ ${d.overnight}</div>`:""}`;
+ } else if(tab==="reservas"){
+ hdr.style.background="linear-gradient(135deg,#2E4057,#2E4057DD)";
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">📋 Checklist de Reservas</div>`;
+ } else if(tab==="budget"){
+ hdr.style.background="linear-gradient(135deg,#2E4057,#2E4057DD)";
+ const tot=BUD.filter(b=>b.s!=="fx").reduce((s,b)=>s+b.est,0);
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">💰 Orçamento — ~€${tot.toLocaleString()}</div>`;
+ } else if(tab==="cars"){
+ hdr.style.background="linear-gradient(135deg,#2E4057,#2E4057DD)";
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">🚗 Guia de Carros</div>`;
+ } else if(tab==="food"){
+ hdr.style.background="linear-gradient(135deg,#6B3A2A,#6B3A2ADD)";
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">🍝 Sabores da Itália</div>`;
+ } else if(tab==="runs"){
+ hdr.style.background="linear-gradient(135deg,#1F6E43,#1F6E43DD)";
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">🏃 Corridas</div>`;
+ } else {
+ let chkDone=0;CHK.forEach((c,ci)=>c.items.forEach((it,ii)=>{if(chkChecked[`${ci}_${ii}`])chkDone++;}));const totChk=CHK.reduce((sm,c)=>sm+c.items.length,0);
+ hdr.style.background="linear-gradient(135deg,#2E4057,#2E4057DD)";
+ hdr.innerHTML=`<div class="hdr-sub"><span>Itália + Suíça + Puglia 2026</span><span>v25</span></div><div class="hdr-tab-title">📝 Lembrete — ${chkDone}/${totChk}</div>`;
+ }
+
+ // Day nav
+ dn.style.display=tab==="today"?"flex":"none";
+ if(tab==="today"){
+ let navH=`<button class="daynav-btn" onclick="go(-1)" ${dayIdx===0?"disabled":""}>‹</button><div class="daynav-scroll" id="dnscroll">`;
+ DAYS.forEach((dd,i)=>{
+ const prev=i>0?regionOf(i-1):"";
+ const cur=regionOf(i);
+ const show=cur!==prev;
+ navH+=`<div class="daynav-item" onclick="goTo(${i})"><div class="daynav-region">${show?cur:""}</div><div class="daynav-dot ${i===dayIdx?"active":""}" style="${i===dayIdx?`background:${d.color};`:""}"><div>${dd.date.split("/")[0]}</div><span>${dd.date.split("/")[1]}</span></div></div>`;
+ });
+ navH+=`</div><button class="daynav-btn" onclick="go(1)" ${dayIdx===DAYS.length-1?"disabled":""}>›</button>`;
+ dn.innerHTML=navH;
+ setTimeout(()=>{const el=document.querySelector(".daynav-dot.active");if(el)el.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});},50);
+ }
+
+ // Content
+ ct.scrollTop=0;
+ if(tab==="today") renderDay(ct,d);
+ else if(tab==="reservas") renderRes(ct);
+ else if(tab==="budget") renderBudget(ct);
+ else if(tab==="cars") renderCars(ct);
+ else if(tab==="food") renderFood(ct);
+ else if(tab==="runs") renderRuns(ct);
+ else renderChk(ct);
+
+ // Bottom nav
+ const tabs=[{id:"today",ico:"📅",lbl:"Dia"},{id:"reservas",ico:"📋",lbl:"Reservas"},{id:"food",ico:"🍝",lbl:"Comida"},{id:"runs",ico:"🏃",lbl:"Correr"}];
+ document.getElementById("bnav").innerHTML=tabs.map(t=>`<button class="${tab===t.id?"active":""}" onclick="setTab('${t.id}')"><span class="ico">${t.ico}</span><span class="lbl">${t.lbl}</span></button>`).join("");
+}
+
+function renderDay(ct,d){
+ let h="";
+ // Bagagem
+ if(d.lug){
+ h+=`<div class="lug lug-${d.lug.lv}"><div class="lug-hdr">🧳 Bagagem</div><div class="lug-txt">${d.lug.t}</div></div>`;
+ }
+ // Notes
+ if(d.notes){
+ const cls=d.notes.includes("★v6")||d.notes.includes("⚠️")?"note-v6":"note-info";
+ h+=`<div class="note ${cls}">${d.notes}</div>`;
+ }
+ // Schedule
+ h+=`<div class="sched-label">Cronograma</div>`;
+ d.schedule.forEach((s,i)=>{
+ h+=`<div class="sched-row" ${i===d.schedule.length-1?'style="border-bottom:none"':''}><div class="sched-time" style="color:${d.color}">${s.t}</div><div class="sched-act">${s.a}</div></div>`;
+ });
+ // Food
+ if(d.food&&d.food.length){
+ h+=`<button class="food-btn" onclick="toggleFood()">🍽️ Gastronomia do dia <span class="arrow ${foodOpen?"open":""}">▼</span></button>`;
+ if(foodOpen){
+ h+=`<div class="food-tags">${d.food.map(f=>`<div class="food-tag">${f}</div>`).join("")}</div>`;
+ }
+ }
+ // Cash
+ if(d.cash) h+=`<div class="cash-box">💶 Espécie estimada: ${d.cash}</div>`;
+ h+=`<div class="swipe-hint">← deslize para navegar →</div>`;
+ ct.innerHTML=h;
+}
+
+function renderRes(ct){
+ let h="";
+ ["done","confirmed","now","month","weeks"].forEach(u=>{
+ const items=RES.filter(r=>r.u===u);
+ if(!items.length)return;
+ const uu=URG[u];
+ h+=`<div class="urg-group"><div class="urg-header"><div class="urg-dot" style="background:${uu.dot}"></div><div class="urg-label" style="color:${uu.c}">${uu.l}</div></div>`;
+ items.forEach(r=>{
+ const gi=RES.indexOf(r);
+ const ck=!!checked[gi];
+ h+=`<div class="res-card ${ck?"checked":""}" onclick="toggleRes(${gi})"><div class="res-check ${ck?"on":""}">${ck?"✓":""}</div><div><div class="res-name">${r.n}</div><div class="res-sub">${r.c} · ${r.d}</div>${r.nt?`<div class="res-note">${r.nt}</div>`:""}</div></div>`;
+ });
+ h+=`</div>`;
+ });
+ ct.innerHTML=h;
+}
+
+function renderBudget(ct){
+ const RATE=6.18;
+ const tot=BUD.filter(b=>b.s!=="fx").reduce((s,b)=>s+b.est,0);
+ const fx=BUD.filter(b=>b.s==="fx").reduce((s,b)=>s+b.est,0);
+ const paid=BUD.filter(b=>b.s==="paid").reduce((s,b)=>s+b.est,0);
+ const totBRL=Math.round(tot*RATE);
+ const paidBRL=Math.round(paid*RATE);
+ let h=`<div class="budget-card"><div class="budget-row"><span class="budget-label">Total estimado</span><span class="budget-val">€${tot.toLocaleString()} <span style="font-size:13px;opacity:0.7;font-weight:400">· ~R$${totBRL.toLocaleString("pt-BR")}</span></span></div><div class="budget-bar"><div class="budget-fill" style="width:${(paid/tot*100).toFixed(1)}%"></div></div><div class="budget-meta"><span>€${paid.toLocaleString()}}) já pago</span><span>${(paid/tot*100).toFixed(1)}%</span></div><div class="budget-daily">~€${Math.round(tot/23)}/dia casal · 23 dias · Câmbio R$ ${RATE.toFixed(2).replace(".",",")}/€</div><div class="budget-daily" style="margin-top:4px">💶 Saldo já convertido (meio de pagamento, fora do total): €${fx.toLocaleString()} · ~R$${Math.round(fx*RATE).toLocaleString("pt-BR")}</div></div>`;
+ BUD.forEach(b=>{
+ const brl=Math.round(b.est*RATE);
+ h+=`<div class="bi"><div class="bi-dot" style="background:${STAT_C[b.s]}"></div><div class="bi-cat">${b.cat}</div><div class="bi-val">€${b.est}<br><span style="font-size:11px;opacity:0.7;font-weight:400">~R$${brl.toLocaleString("pt-BR")}</span></div></div>`;
+ });
+ h+=`<div class="budget-legend"><span><i style="background:#28A745"></i>Pago</span><span><i style="background:#DC3545"></i>Comprar</span><span><i style="background:#FFC107"></i>Reservar</span><span><i style="background:#6C757D"></i>A gastar</span><span><i style="background:#1F6FEB"></i>Saldo €</span></div>`;
+ ct.innerHTML=h;
+}
+
+function renderCars(ct){
+ let h="";
+ CARS.forEach(car=>{
+ h+=`<div class="car-card"><div class="car-top"><div class="car-label">🚗 ${car.label}</div><div class="car-dates">${car.dates}</div></div><div class="car-route">${car.route}</div><div class="car-info"><strong>Retirar:</strong> ${car.pickup}</div><div class="car-info" style="margin-bottom:12px"><strong>Devolver:</strong> ${car.dropoff}</div>`;
+ car.w.forEach(w=>{
+ const cls=w.startsWith("⚠")?"danger":w.startsWith("★")?"v6":"normal";
+ h+=`<div class="car-warn ${cls}">${w}</div>`;
+ });
+ h+=`</div>`;
+ });
+ ct.innerHTML=h;
+}
+
+function renderFood(ct){
+ let h="";
+ FOOD.forEach(cat=>{
+ h+=`<div class="food-cat"><div class="food-cat-hdr" style="background:${cat.color}"><div class="food-cat-title">${cat.region}</div><div class="food-cat-sub">${cat.days}</div></div>`;
+ cat.items.forEach(it=>{
+ h+=`<div class="food-item"><div class="food-item-top"><div class="food-item-name">${it.name}</div><div class="food-item-price">${it.price}</div></div><div class="food-item-note">${it.note}</div></div>`;
+ });
+ h+=`</div>`;
+ });
+ ct.innerHTML=h;
+}
+
+function renderChk(ct){
+ let h="";
+ CHK.forEach((cat,ci)=>{
+ const total=cat.items.length;
+ let done=0;cat.items.forEach((it,ii)=>{if(chkChecked[`${ci}_${ii}`])done++;});
+ const pct=total?Math.round(done/total*100):0;
+ h+=`<div class="chk-cat"><div class="chk-cat-hdr" style="background:${cat.color}"><div class="chk-cat-title">${cat.cat}</div><div class="chk-cat-prog">${done}/${total}</div></div><div class="chk-cat-bar"><div class="chk-cat-fill" style="width:${pct}%;background:${cat.color}"></div></div>`;
+ cat.items.forEach((it,ii)=>{
+ const k=`${ci}_${ii}`;
+ const ck=!!chkChecked[k];
+ h+=`<div class="chk-item ${ck?"checked":""}" onclick="toggleChk('${k}')"><div class="chk-box ${ck?"on":""}" style="${ck?`background:${cat.color};border-color:${cat.color}`:""}">${ck?"✓":""}</div><div class="chk-content"><div class="chk-text">${it.t}</div>${it.n?`<div class="chk-note">${it.n}</div>`:""}</div></div>`;
+ });
+ h+=`</div>`;
+ });
+ ct.innerHTML=h;
+}
+
+// ═══ ACTIONS ════════════════════════════════════════════════════════════
+function setTab(t){tab=t;foodOpen=false;render();}
+function go(dir){dayIdx=Math.max(0,Math.min(DAYS.length-1,dayIdx+dir));foodOpen=false;render();}
+function goTo(i){dayIdx=i;foodOpen=false;render();}
+function toggleFood(){foodOpen=!foodOpen;render();}
+function toggleRes(i){checked[i]=!checked[i];persist();render();}
+function toggleChk(k){chkChecked[k]=!chkChecked[k];persist();render();}
+
+// Swipe
+let touchX=null;
+document.getElementById("content").addEventListener("touchstart",e=>{touchX=e.touches[0].clientX;});
+document.getElementById("content").addEventListener("touchend",e=>{
+ if(touchX===null||tab!=="today")return;
+ const diff=touchX-e.changedTouches[0].clientX;
+ if(Math.abs(diff)>60){if(diff>0)go(1);else go(-1);}
+ touchX=null;
+});
+
+// Init — abrir no dia atual durante a viagem (fallback: dia 1 antes, último dia depois)
+(function initDay(){
+ const MM={jan:0,fev:1,mar:2,abr:3,mai:4,jun:5,jul:6,ago:7,set:8,out:9,nov:10,dez:11};
+ const today=new Date(); today.setHours(0,0,0,0);
+ let idx=0;
+ for(let i=0;i<DAYS.length;i++){
+ const p=DAYS[i].date.split("/"); const mo=MM[p[1]];
+ if(mo===undefined) continue;
+ const dt=new Date(2026, mo, parseInt(p[0],10));
+ if(dt<=today) idx=i;
+ }
+ dayIdx=idx;
+})();
+render();
+</script>
+</body>
+</html>
